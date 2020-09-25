@@ -74,7 +74,7 @@ void enqueueTXData(uint8_t dataSend) {
     
 }
 
-//initUART2(BAUD_RATE);
+
 
 void UART2_IRQHandler(void) {  
     NVIC_ClearPendingIRQ(UART2_IRQn);
@@ -92,7 +92,6 @@ void UART2_IRQHandler(void) {
             UART2->C2 &= ~UART_C2_TIE_MASK;
         
     }
-
    
     // Receive operation activated
     if (UART2->S1 & UART_S1_RDRF_MASK) {     

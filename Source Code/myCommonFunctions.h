@@ -1,6 +1,8 @@
-# include <MKL25Z4.h>
+#pragma once
 
-# define MASK(x) (1 << (x))
+#include <MKL25Z4.h>
+
+#define MASK(x) (1 << (x))
 
 static void delay(volatile uint32_t nof) {
   while(nof!=0) {
