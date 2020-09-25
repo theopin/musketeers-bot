@@ -10,6 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -384,7 +385,32 @@
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
+              <FilePath>.\Source Code\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>myCircularBuffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myCircularBuffer.h</FilePath>
+            </File>
+            <File>
+              <FileName>myCommonFunctions.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myCommonFunctions.h</FilePath>
+            </File>
+            <File>
+              <FileName>myMessageList.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myMessageList.h</FilePath>
+            </File>
+            <File>
+              <FileName>myUART.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myUART.h</FilePath>
+            </File>
+            <File>
+              <FileName>myLEDBlinky.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myLEDBlinky.h</FilePath>
             </File>
           </Files>
         </Group>

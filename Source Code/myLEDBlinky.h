@@ -1,6 +1,10 @@
 # include "myCommonFunctions.h"
 
 #define PTA17 17
+
+#define CONNECTION_FLASH_DELAY 250000
+#define CONNECTION_REPS_DELAY 250000
+
 #define GREEN_RUN_DELAY 750000
 #define RED_RUN_DELAY 500000
 #define RED_STOP_DELAY 250000
@@ -38,9 +42,15 @@ void initExternalLEDPins(){
     initGPIOPin(&(PORTA->PCR[PTA17]), &(PTA->PDDR), PTA17, 1);
 }
 
-
 void toggleRedLED() {
     PTA->PTOR = MASK(PTA17);
+}
+
+void operateRedLED() {
+    uint32_t redDelayLength;
+	toggleRedLED();
+    redDelayLength = isRunning ? RED_RUN_DELAY : RED_STOP_DELAY;
+    delay(redDelayLength);
 }
 
 void clearLitGreenLED(){
@@ -58,7 +68,7 @@ void setNewActiveGreenLED(int newLED){
         delay(GREEN_RUN_DELAY);
 }
 
-void setRunGreenLED() {
+void setTrailGreenLED() {
     int i;    
     for(i = 0; i < NUM_GREEN_LEDS; i++) {
         if(!isRunning)
@@ -67,36 +77,31 @@ void setRunGreenLED() {
     }
 }
 
-
-
-
-void setStopGreenLED() {
+void setAllGreenLED() {
     int i;    
     for(i = 0; i < NUM_GREEN_LEDS; i++) 
         PTC->PSOR = MASK(greenLEDPins[i]);
 }
 
-
-
-int main(void) {
-    uint32_t redDelayLength;
-    
-    SystemCoreClockUpdate();    
-    initExternalLEDPins();
-   
-    while(1) {
-        // Green LED Version
-        if(isRunning){
-            clearLitGreenLED();
-            setRunGreenLED();
-        }
-        else
-            setStopGreenLED();
+void signalSuccessConnection() {
+	int repetitions = 2;
+	while(repetitions) {
         
-     /* Red LED Version
-        toggleRedLED();
-        redDelayLength = isRunning ? RED_RUN_DELAY : RED_STOP_DELAY;
-        delay(redDelayLength);
-       */
+        setAllGreenLED();
+        delay(CONNECTION_FLASH_DELAY);
+        clearLitGreenLED();
+        
+        repetitions--;
+        delay(CONNECTION_REPS_DELAY);
+	}	
+}
+
+void operateGreenLED() {
+	// Green LED Version
+    if(isRunning){
+        clearLitGreenLED();
+        setTrailGreenLED();
     }
+    else
+        setAllGreenLED();
 }

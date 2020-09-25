@@ -62,13 +62,6 @@ void initUART2(uint32_t baud_rate) {
     UART2->C2 |= (UART_C2_TE_MASK | UART_C2_RE_MASK);
 }
 
-static void delay(volatile uint32_t timer)
-{
-    while (timer != 0){
-        __asm("NOP");
-        timer--;
-    }
-}
 
 void enqueueTXData(uint8_t dataSend) {
     int opResult;
@@ -81,15 +74,7 @@ void enqueueTXData(uint8_t dataSend) {
     
 }
 
-int main(void) {
-    SystemCoreClockUpdate();
-    initUART2(BAUD_RATE);
-
-    while(1) {
-        enqueueTXData(0x69);
-        delay(0x80000);
-    }
-}
+//initUART2(BAUD_RATE);
 
 void UART2_IRQHandler(void) {  
     NVIC_ClearPendingIRQ(UART2_IRQn);
@@ -134,5 +119,3 @@ void UART2_IRQHandler(void) {
 }
 
 */
-
-
