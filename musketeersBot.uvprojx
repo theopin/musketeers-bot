@@ -383,11 +383,6 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source Code\main.c</FilePath>
-            </File>
-            <File>
               <FileName>myCircularBuffer.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Source Code\myCircularBuffer.h</FilePath>
@@ -408,14 +403,19 @@
               <FilePath>.\Source Code\myUART.h</FilePath>
             </File>
             <File>
-              <FileName>myLEDBlinky.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Source Code\myLEDBlinky.h</FilePath>
-            </File>
-            <File>
               <FileName>myInternalLED.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Source Code\myInternalLED.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source Code\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>myExternalLED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myExternalLED.h</FilePath>
             </File>
           </Files>
         </Group>

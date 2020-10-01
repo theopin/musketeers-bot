@@ -29,7 +29,7 @@ volatile int isRunning = 1;
 port_c_t greenLEDPins[NUM_GREEN_LEDS] = {PTC3, PTC4, PTC5, PTC6, PTC10, PTC11, PTC12, PTC13, PTC16, PTC17};
 int activeGreenLED = 0;
 
-void initExternalLEDPins(){
+void initExternalLED(){
     int i = 0;
     // Enable Clock to PORTA and PORTC
     SIM->SCGC5 |= ((SIM_SCGC5_PORTA_MASK) | (SIM_SCGC5_PORTC_MASK));

@@ -1,28 +1,53 @@
-#include "myLEDBlinky.h"
+/*----------------------------------------------------------------------------
+ * CMSIS-RTOS 'main' function template
+ *---------------------------------------------------------------------------*/
+ 
+#include "RTE_Components.h"
+#include CMSIS_device_header
+#include "cmsis_os2.h"
+
+#include "myExternalLED.h"
 #include "myUART.h"
 #include "myInternalLED.h"
 
-int main(void) {
-  
-    SystemCoreClockUpdate();    
+void initRobotComponents(void) {
     initUART2(BAUD_RATE);
-    initExternalLEDPins();
+    initExternalLED();
     initInternalLED();
-    offLED();
-   
-    while(1) {
-		uint8_t message;
-        if (!Q_Empty(&rxQ)) {
-            message = Q_Dequeue(&rxQ);
-            if (message == 0x03)
-                toggleLED(RED);
-            else if (message == 0x02)
-                toggleLED(GREEN);
-            else 
-                toggleLED(BLUE);
- 
-            
-        }
-        
+}    
+    
+/*----------------------------------------------------------------------------
+ * Thread - Green LED
+ *---------------------------------------------------------------------------*/
+void greenLEDThread (void *argument) {
+  
+    for (;;) {
+        operateGreenLED();
+        osDelay(1000);
     }
+}
+
+/*----------------------------------------------------------------------------
+ * Thread - Red LED
+ *---------------------------------------------------------------------------*/
+void redLEDThread (void *argument) {
+    for (;;) {
+        operateRedLED();
+        osDelay(1000);
+    }
+}
+
+int main (void) {
+ 
+    // System Initialization
+    SystemCoreClockUpdate();
+    initRobotComponents();
+ 
+    osKernelInitialize();                 // Initialize CMSIS-RTOS
+  
+    osThreadNew(greenLEDThread, NULL, NULL);
+    osThreadNew(redLEDThread, NULL, NULL);
+  
+    osKernelStart();                      // Start thread execution
+    for (;;) {}
 }
