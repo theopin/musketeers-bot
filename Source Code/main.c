@@ -2,44 +2,38 @@
  * CMSIS-RTOS 'main' function template
  *---------------------------------------------------------------------------*/
  
-//#include "myOSFunctions.h"
-//#include "myInternalLED.h"
-
-#include "myUART.h"
-#include "myMessageList.h"
+#include "myOSFunctions.h"
 #include "myInternalLED.h"
+
 
 void initRobotComponents(void) {
     initUART2(BAUD_RATE);
-    //initExternalLED();
+    initExternalLED();
     initInternalLED();
 }    
-
+ 
 /*----------------------------------------------------------------------------
  * Thread - Green LED
  *---------------------------------------------------------------------------*/
-/*
 void greenLEDThread (void *argument) {
   
     for (;;) {
         operateGreenLED();
     }
 }
-*/
+
 /*----------------------------------------------------------------------------
  * Thread - Red LED
  *---------------------------------------------------------------------------*/
-/*
 void redLEDThread (void *argument) {
     for (;;) {
         operateRedLED();
     }
 }
-*/
+
 /*----------------------------------------------------------------------------
  * Thread - Communications
  *---------------------------------------------------------------------------*/
-/*
 void commsThread (void *argument) {
     uint8_t message;
     for (;;) {
@@ -55,13 +49,13 @@ void commsThread (void *argument) {
       
     }
 }
-*/
+
 int main (void) {
  
     // System Initialization
     SystemCoreClockUpdate();
     initRobotComponents();
- /*
+ 
     osKernelInitialize();                 // Initialize CMSIS-RTOS
   
     osThreadNew(commsThread, NULL, NULL);
@@ -69,7 +63,7 @@ int main (void) {
     osKernelStart();                      // Start thread execution
     for (;;) {}
 
-*/   
+/*    
     while(1) {
 		uint8_t message;
         if (!Q_Empty(&rxQ)) {
@@ -82,5 +76,6 @@ int main (void) {
                 toggleLED(BLUE);        
         }
     }    
+*/
 }
 
