@@ -4,6 +4,7 @@
 
 #include "myExternalLED.h"
 #include "myUART.h"
+#include "myMessageList.h" 
 
 void operateGreenLED() {
 	// Green LED Version
@@ -26,5 +27,7 @@ uint8_t operateUART2() {
     if (!Q_Empty(&rxQ)) 
         return Q_Dequeue(&rxQ);
 
-    return NULL;
+    return MESSAGE_EMPTY;
 }
+
+

@@ -10,5 +10,6 @@ typedef enum {
     MESSAGE_W = 0x07,
     MESSAGE_NW = 0x08,
     MESSAGE_STOP = 0x09,
-    MESSAGE_BT_CONNECT = 0x0A
+    MESSAGE_BT_CONNECT = 0x0A,
+    MESSAGE_EMPTY = 0x50
 }message_list_t;

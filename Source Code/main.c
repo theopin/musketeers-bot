@@ -4,7 +4,7 @@
  
 #include "myOSFunctions.h"
 #include "myInternalLED.h"
-#include "myMessageList.h" 
+
 
 void initRobotComponents(void) {
     initUART2(BAUD_RATE);
@@ -38,12 +38,15 @@ void commsThread (void *argument) {
     uint8_t message;
     for (;;) {
         message = operateUART2();
-        switch(message) {
-            case MESSAGE_E:
-                osThreadNew(greenLEDThread, NULL, NULL);
-                osThreadNew(redLEDThread, NULL, NULL);
-                break;       
+        if(message == MESSAGE_E) {
+            toggleLED(GREEN);
+            signalSuccessConnection();
+            osThreadNew(greenLEDThread, NULL, NULL);
+            osThreadNew(redLEDThread, NULL, NULL);
         }
+        else if (message == MESSAGE_NE)
+            toggleLED(RED); 
+      
     }
 }
 
@@ -55,10 +58,24 @@ int main (void) {
  
     osKernelInitialize();                 // Initialize CMSIS-RTOS
   
-    //osThreadNew(commsThread, NULL, NULL);
-    osThreadNew(greenLEDThread, NULL, NULL);
-    osThreadNew(redLEDThread, NULL, NULL);
-    
+    osThreadNew(commsThread, NULL, NULL);
+
     osKernelStart();                      // Start thread execution
     for (;;) {}
+
+/*    
+    while(1) {
+		uint8_t message;
+        if (!Q_Empty(&rxQ)) {
+            message = Q_Dequeue(&rxQ);
+            if (message == MESSAGE_E)
+                toggleLED(RED);
+            else if (message == 0x02)
+                toggleLED(GREEN);
+            else 
+                toggleLED(BLUE);        
+        }
+    }    
+*/
 }
+
