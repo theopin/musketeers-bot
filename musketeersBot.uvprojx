@@ -417,6 +417,11 @@
               <FileType>5</FileType>
               <FilePath>.\Source Code\myExternalLED.h</FilePath>
             </File>
+            <File>
+              <FileName>myOSFunctions.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myOSFunctions.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
