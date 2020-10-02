@@ -1,4 +1,6 @@
-typedef enum list_t{
+#pragma once
+
+typedef enum {
     MESSAGE_N = 0x01,
     MESSAGE_NE = 0x02,
     MESSAGE_E = 0x03,

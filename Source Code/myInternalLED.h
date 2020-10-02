@@ -6,7 +6,7 @@
 #define MASK(x) (1 << (x))
 #define NUM_LEDS 3
 
-typedef enum color_t{
+typedef enum {
     RED = RED_LED, 
     GREEN = GREEN_LED, 
     BLUE = BLUE_LED

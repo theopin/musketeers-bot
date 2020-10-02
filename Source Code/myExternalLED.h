@@ -10,7 +10,7 @@
 #define RED_STOP_DELAY 250000
 #define NUM_GREEN_LEDS 10
 
-typedef enum port_t{
+typedef enum {
     PTC3 = 3,
     PTC4 = 4,
     PTC5 = 5,
@@ -23,7 +23,7 @@ typedef enum port_t{
     PTC17 = 17
 } port_c_t;
 
-volatile int isRunning = 1;
+volatile int isRunning = 0;
 
 
 port_c_t greenLEDPins[NUM_GREEN_LEDS] = {PTC3, PTC4, PTC5, PTC6, PTC10, PTC11, PTC12, PTC13, PTC16, PTC17};
@@ -44,13 +44,6 @@ void initExternalLED(){
 
 void toggleRedLED() {
     PTA->PTOR = MASK(PTA17);
-}
-
-void operateRedLED() {
-    uint32_t redDelayLength;
-	toggleRedLED();
-    redDelayLength = isRunning ? RED_RUN_DELAY : RED_STOP_DELAY;
-    delay(redDelayLength);
 }
 
 void clearLitGreenLED(){
@@ -96,12 +89,3 @@ void signalSuccessConnection() {
 	}	
 }
 
-void operateGreenLED() {
-	// Green LED Version
-    if(isRunning){
-        clearLitGreenLED();
-        setTrailGreenLED();
-    }
-    else
-        setAllGreenLED();
-}
