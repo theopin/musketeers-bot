@@ -38,7 +38,7 @@ void commsThread (void *argument) {
     uint8_t message;
     for (;;) {
         message = operateUART2();
-        if(message == MESSAGE_E) {
+        if(message == MESSAGE_BT_CONNECT) {
             toggleLED(GREEN);
             signalSuccessConnection();
             osThreadNew(greenLEDThread, NULL, NULL);
