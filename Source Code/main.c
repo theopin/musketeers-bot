@@ -51,11 +51,45 @@ void commsThread (void *argument) {
     }
 }
 
+
+/*----------------------------------------------------------------------------
+ * Thread - MotorMovement
+ *---------------------------------------------------------------------------*/
+void motorThread (void *arguement) {
+		uint8_t message;	
+		for (;;) {
+				if (!Q_Empty(&rxQ)) {
+					message = Q_Dequeue(&rxQ);
+						if (message == MESSAGE_STOP)
+								stop();
+						else if (message == MESSAGE_N)
+								moveN();
+						else if (message == MESSAGE_NE)
+								moveNE();
+						else if (message == MESSAGE_E)
+								moveE();
+						else if (message == MESSAGE_SE)
+								moveSE();
+						else if (message == MESSAGE_S)
+								moveS();
+						else if (message == MESSAGE_SW)
+								moveSW();
+						else if (message == MESSAGE_W)
+								moveW();
+						else if (message == MESSAGE_NW)
+								moveNW();				
+						else 
+								stop(); 					
+				}
+		}
+}
+
 int main (void) {
  
     // System Initialization
     SystemCoreClockUpdate();
     initRobotComponents();
+		initPWM();
  
     osKernelInitialize();                 // Initialize CMSIS-RTOS
   
