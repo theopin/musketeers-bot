@@ -4,6 +4,7 @@
  
 #include "myOSFunctions.h"
 #include "myInternalLED.h"
+#include "motorMovement.h"
 
 
 void initRobotComponents(void) {
