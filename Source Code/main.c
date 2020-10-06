@@ -98,19 +98,5 @@ int main (void) {
     osKernelStart();                      // Start thread execution
     for (;;) {}
 
-/*    
-    while(1) {
-		uint8_t message;
-        if (!Q_Empty(&rxQ)) {
-            message = Q_Dequeue(&rxQ);
-            if (message == MESSAGE_E)
-                toggleLED(RED);
-            else if (message == 0x02)
-                toggleLED(GREEN);
-            else 
-                toggleLED(BLUE);        
-        }
-    }    
-*/
 }
 

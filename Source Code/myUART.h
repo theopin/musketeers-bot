@@ -21,7 +21,7 @@ void initUART2Interrupt(uint32_t baud_rate) {
     NVIC_ClearPendingIRQ(UART2_IRQn);
     NVIC_EnableIRQ(UART2_IRQn);
     
-    UART2->C2 &= ((UART_C2_RIE_MASK));
+    UART2->C2 &= ((UART_C2_TIE_MASK) | (UART_C2_RIE_MASK));
     UART2->C2 |= ((UART_C2_RIE_MASK));
 }
 
@@ -38,7 +38,7 @@ void initUART2(uint32_t baud_rate) {
     
     
     // Disable transmitter and Receiver
-    UART2->C2 &= ~((UART_C2_RE_MASK));
+    UART2->C2 &= ~((UART_C2_TE_MASK) | (UART_C2_RE_MASK));
    
    /* 
     * busClock: UART runs at half the rate of systemClock
