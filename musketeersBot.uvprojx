@@ -383,49 +383,59 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\main.c</FilePath>
+            </File>
+            <File>
               <FileName>myCircularBuffer.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Source Code\myCircularBuffer.h</FilePath>
+              <FilePath>.\Src\myCircularBuffer.h</FilePath>
             </File>
             <File>
               <FileName>myCommonFunctions.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Source Code\myCommonFunctions.h</FilePath>
+              <FilePath>.\Src\myCommonFunctions.h</FilePath>
             </File>
             <File>
               <FileName>myMessageList.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Source Code\myMessageList.h</FilePath>
+              <FilePath>.\Src\myMessageList.h</FilePath>
             </File>
             <File>
               <FileName>myUART.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Source Code\myUART.h</FilePath>
+              <FilePath>.\Src\myUART.h</FilePath>
             </File>
             <File>
               <FileName>myInternalLED.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Source Code\myInternalLED.h</FilePath>
-            </File>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source Code\main.c</FilePath>
+              <FilePath>.\Src\myInternalLED.h</FilePath>
             </File>
             <File>
               <FileName>myExternalLED.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Source Code\myExternalLED.h</FilePath>
+              <FilePath>.\Src\myExternalLED.h</FilePath>
             </File>
             <File>
               <FileName>myOSFunctions.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Source Code\myOSFunctions.h</FilePath>
+              <FilePath>.\Src\myOSFunctions.h</FilePath>
             </File>
             <File>
-              <FileName>motorMovement.h</FileName>
+              <FileName>myMotor.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\motorMovement.h</FilePath>
+              <FilePath>.\Src\myMotor.h</FilePath>
+            </File>
+            <File>
+              <FileName>myLED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Src\myLED.h</FilePath>
+            </File>
+            <File>
+              <FileName>myAudio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Src\myAudio.h</FilePath>
             </File>
           </Files>
         </Group>
