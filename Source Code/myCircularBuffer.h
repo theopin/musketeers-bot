@@ -7,7 +7,7 @@ typedef struct {
     unsigned int Size; // quantity of elements in queue
 } Q_T;
 
-Q_T txQ, rxQ;
+Q_T rxQ;
 
 void Q_Init(Q_T * q) {
     unsigned int i;

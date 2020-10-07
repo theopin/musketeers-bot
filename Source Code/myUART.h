@@ -8,10 +8,13 @@
 
 volatile int count = 0;
 
+int a = 0;
+
+int b = 0;
+
 // Interrupt Method
 void initUART2Interrupt(uint32_t baud_rate) {
     
-    Q_Init(&txQ);
     Q_Init(&rxQ);
     
     NVIC_SetPriority(UART2_IRQn, 128);
@@ -19,7 +22,7 @@ void initUART2Interrupt(uint32_t baud_rate) {
     NVIC_EnableIRQ(UART2_IRQn);
     
     UART2->C2 &= ((UART_C2_TIE_MASK) | (UART_C2_RIE_MASK));
-    UART2->C2 |= ((UART_C2_TIE_MASK) | (UART_C2_RIE_MASK));
+    UART2->C2 |= ((UART_C2_RIE_MASK));
 }
 
 void initUART2(uint32_t baud_rate) {
@@ -30,9 +33,6 @@ void initUART2(uint32_t baud_rate) {
     SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
     
     // 4 - Alt 4 Location of UART2 -TX/RX
-    PORTE->PCR[UART_TX_PTE22] &= ~PORT_PCR_MUX_MASK;
-    PORTE->PCR[UART_TX_PTE22] |= PORT_PCR_MUX(4);
-    
     PORTE->PCR[UART_RX_PTE23] &= ~PORT_PCR_MUX_MASK;
     PORTE->PCR[UART_RX_PTE23] |= PORT_PCR_MUX(4);    
     
@@ -59,51 +59,22 @@ void initUART2(uint32_t baud_rate) {
     initUART2Interrupt(BAUD_RATE);
     
     // Enable transmitter and Receiver
-    UART2->C2 |= (UART_C2_TE_MASK | UART_C2_RE_MASK);
+    UART2->C2 |= (UART_C2_RE_MASK);
 }
-
-
-void enqueueTXData(uint8_t dataSend) {
-    int opResult;
-       
-    if (!(UART2->C2 & UART_C2_TIE_MASK))
-        UART2->C2 |= UART_C2_TIE_MASK;
-    do
-        opResult = Q_Enqueue(&txQ, dataSend);
-    while(!opResult);   
-    
-}
-
-
 
 void UART2_IRQHandler(void) {  
+	
+		a++;
     NVIC_ClearPendingIRQ(UART2_IRQn);
     
-    // Transmit operation activated
-    if (UART2->S1 & UART_S1_TDRE_MASK) {
-        
-        // Character can be sent to txQ  
-        if (!Q_Empty(&txQ)){
-            UART2->D = Q_Dequeue(&txQ);
-            count++;
-        }
-        // Queue Empty - disable tx interrupt temp
-        else 
-            UART2->C2 &= ~UART_C2_TIE_MASK;
-        
-    }
-   
     // Receive operation activated
     if (UART2->S1 & UART_S1_RDRF_MASK) {     
+				b++;
         // queue is not full
         if (!Q_Full(&rxQ)) 
             Q_Enqueue(&rxQ, UART2->D);
-        
-        //else  
-            // transmit queuefull message?
-            //while(1);
-       
     }
+		
 }
 /*
     // Error Detected

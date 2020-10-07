@@ -176,7 +176,7 @@
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M0+"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
-            <mOS>0</mOS>
+            <mOS>1</mOS>
             <uocRom>0</uocRom>
             <uocRam>0</uocRam>
             <hadIROM>1</hadIROM>
@@ -383,11 +383,6 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source Code\main.c</FilePath>
-            </File>
-            <File>
               <FileName>myCircularBuffer.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Source Code\myCircularBuffer.h</FilePath>
@@ -408,14 +403,29 @@
               <FilePath>.\Source Code\myUART.h</FilePath>
             </File>
             <File>
-              <FileName>myLEDBlinky.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Source Code\myLEDBlinky.h</FilePath>
-            </File>
-            <File>
               <FileName>myInternalLED.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Source Code\myInternalLED.h</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source Code\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>myExternalLED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myExternalLED.h</FilePath>
+            </File>
+            <File>
+              <FileName>myOSFunctions.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source Code\myOSFunctions.h</FilePath>
+            </File>
+            <File>
+              <FileName>motorMovement.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\motorMovement.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -430,9 +440,22 @@
   </Targets>
 
   <RTE>
-    <apis/>
+    <apis>
+      <api Capiversion="2.1.3" Cclass="CMSIS" Cgroup="RTOS2" exclusive="1">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </api>
+    </apis>
     <components>
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.3.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
+      <component Capiversion="2.1.3" Cclass="CMSIS" Cgroup="RTOS2" Csub="Keil RTX5" Cvariant="Library" Cvendor="ARM" Cversion="5.5.1" condition="RTOS2 RTX5 Lib">
         <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
         <targetInfos>
           <targetInfo name="Target 1"/>
@@ -446,6 +469,22 @@
       </component>
     </components>
     <files>
+      <file attr="config" category="source" name="CMSIS\RTOS2\RTX\Config\RTX_Config.c" version="5.1.0">
+        <instance index="0">RTE\CMSIS\RTX_Config.c</instance>
+        <component Capiversion="2.1.3" Cclass="CMSIS" Cgroup="RTOS2" Csub="Keil RTX5" Cvariant="Library" Cvendor="ARM" Cversion="5.5.1" condition="RTOS2 RTX5 Lib"/>
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="header" name="CMSIS\RTOS2\RTX\Config\RTX_Config.h" version="5.5.0">
+        <instance index="0">RTE\CMSIS\RTX_Config.h</instance>
+        <component Capiversion="2.1.3" Cclass="CMSIS" Cgroup="RTOS2" Csub="Keil RTX5" Cvariant="Library" Cvendor="ARM" Cversion="5.5.1" condition="RTOS2 RTX5 Lib"/>
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </file>
       <file attr="config" category="source" condition="Compiler ARMCC" name="Device\Source\ARM\startup_MKL25Z4.s" version="2.5.0">
         <instance index="0">RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="2.5.0" condition="MKL25Z4 CMSIS"/>

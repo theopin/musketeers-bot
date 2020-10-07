@@ -6,7 +6,7 @@
 #define MASK(x) (1 << (x))
 #define NUM_LEDS 3
 
-typedef enum color_t{
+typedef enum {
     RED = RED_LED, 
     GREEN = GREEN_LED, 
     BLUE = BLUE_LED
@@ -14,9 +14,12 @@ typedef enum color_t{
 
 led_colors_t color_sets[3] = {RED, GREEN, BLUE};
     
-   
-void initInternalLED()
-{
+void offLED() {  
+    PTD->PSOR = MASK(BLUE_LED);
+    PTB->PSOR = (MASK(RED_LED) | MASK(GREEN_LED));
+}
+
+void initInternalLED() {
     // Enable Clock to PORTB and PORTD
     SIM->SCGC5 |= ((SIM_SCGC5_PORTB_MASK) | (SIM_SCGC5_PORTD_MASK));
     
@@ -24,16 +27,10 @@ void initInternalLED()
     initGPIOPin(&(PORTB->PCR[RED_LED]), &(PTB->PDDR), RED_LED, 1);
     initGPIOPin(&(PORTB->PCR[GREEN_LED]), &(PTB->PDDR), GREEN_LED, 1);
     initGPIOPin(&(PORTD->PCR[BLUE_LED]), &(PTD->PDDR), BLUE_LED, 1);
+    offLED();
 }
 
-void offLED()
-{  
-    PTD->PSOR = MASK(BLUE_LED);
-    PTB->PSOR = (MASK(RED_LED) | MASK(GREEN_LED));
-}
-
-void toggleLED(led_colors_t color)
-{
+void toggleLED(led_colors_t color) {
     offLED();
     
     if(color == BLUE_LED)
