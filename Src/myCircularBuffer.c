@@ -1,18 +1,10 @@
-#define Q_SIZE (32)
-
-typedef struct {
-    unsigned char Data[Q_SIZE];
-    unsigned int Head; // points to oldest data element
-    unsigned int Tail; // points to next free space
-    unsigned int Size; // quantity of elements in queue
-} Q_T;
-
-Q_T rxQ;
+#include "myCircularBuffer.h"
 
 void Q_Init(Q_T * q) {
     unsigned int i;
-    for (i=0; i<Q_SIZE; i++)
+    for (i=0; i<Q_SIZE; i++) {
         q->Data[i] = 0; // to simplify our lives when debugging
+    }
     q->Head = 0;
     q->Tail = 0;
     q->Size = 0;

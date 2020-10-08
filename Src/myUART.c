@@ -1,13 +1,6 @@
-#include <MKL25Z4.h>
-#include "myCircularBuffer.h"
-#include "myMessageList.h" 
-
-#define BAUD_RATE 9600
-#define UART_TX_PTE22 22
-#define UART_RX_PTE23 23
-#define UART2_INT_PRIO 128
-
-volatile int count = 0;
+#include "myUART.h"
+#include "MKL25Z4.h"
+#include "myMessageList.h"
 
 void initUART2(uint32_t baud_rate) {
     uint32_t divisor, busClock;
@@ -18,17 +11,17 @@ void initUART2(uint32_t baud_rate) {
 
     // 4 - Alt 4 Location of UART2 -TX/RX
     PORTE->PCR[UART_RX_PTE23] &= ~PORT_PCR_MUX_MASK;
-    PORTE->PCR[UART_RX_PTE23] |= PORT_PCR_MUX(4);    
+    PORTE->PCR[UART_RX_PTE23] |= PORT_PCR_MUX(4);
 
     // Disable transmitter and Receiver
     UART2->C2 &= ~((UART_C2_TE_MASK) | (UART_C2_RE_MASK));
 
-    /* 
+    /*
      * busClock: runs at half the rate of systemClock
      * UART: runs based on bus clock
      * divisor: Scale to divide by - include oversampling
      * UART_BDH_SBR; Upper bits of the divisor
-     * UART_BDL_SBR; Lower bits of the divisor    
+     * UART_BDL_SBR; Lower bits of the divisor
      */
     busClock = (DEFAULT_SYSTEM_CLOCK)/2;
     divisor = busClock / (baud_rate * 16);
@@ -39,12 +32,12 @@ void initUART2(uint32_t baud_rate) {
     UART2->C1 = 0;
     UART2->S2 = 0;
     UART2->C3 = 0;
-    
+
     Q_Init(&rxQ); // Initialize circular buffer
-    
+
     // Interrupt configuration
     NVIC_SetPriority(UART2_IRQn, 2);
-    
+
     NVIC_ClearPendingIRQ(UART2_IRQn);
     NVIC_EnableIRQ(UART2_IRQn);
 
@@ -55,12 +48,12 @@ void initUART2(uint32_t baud_rate) {
     UART2->C2 |= (UART_C2_RE_MASK);
 }
 
-void UART2_IRQHandler(void) {  
+void UART2_IRQHandler(void) {
     NVIC_ClearPendingIRQ(UART2_IRQn);
 
     // Receive operation activated
     if (UART2->S1 & UART_S1_RDRF_MASK) {
-        if (!Q_Full(&rxQ)) 
+        if (!Q_Full(&rxQ))
             Q_Enqueue(&rxQ, UART2->D);
     }
 

@@ -1,5 +1,4 @@
-#pragma once
-
+#include "myCommonFunctions.h"
 #include <MKL25Z4.h>
 
 #define MASK(x) (1 << (x))

@@ -2,8 +2,10 @@
  * CMSIS-RTOS 'main' function template
  *---------------------------------------------------------------------------*/
 
+#include "myCommonFunctions.h"
 #include "myOSFunctions.h"
-#include "myLED.h"
+#include "myExternalLED.h"
+#include "myInternalLED.h"
 #include "myMotor.h"
 //#include "myAudio.h"
 #include "myUART.h"
@@ -19,43 +21,18 @@ void tLED(void *argument) {
     uint32_t flags;
     
     for (;;) {
-        // Wait till motor specific flags are set
-        flags = osEventFlagsWait(events_flags_id, MESSAGE_BACK_LED_EVENT_FLAG_MASK, osFlagsWaitAny, osWaitForever);
-
+        runExternalLED();
+        // Wait till led specific flags are set
+        flags = osEventFlagsWait(events_flags_id, MESSAGE_EXT_LED_EVENT_FLAG_MASK, osFlagsWaitAny, osWaitForever);
+        int isRobot
         // Handles the event
         switch(flags){
-            case MESSAGE_STOP:
-                stop();
-                break;  
-            case MESSAGE_N:
-                moveN();
-                break;
-            case MESSAGE_NE:
-                moveNE();
-                break;
-            case MESSAGE_E:
-                moveE();
-                break;
-            case MESSAGE_SE:
-                moveSE();
-                break;
-            case MESSAGE_S:
-                moveS();
-                break;
-            case MESSAGE_SW:
-                moveSW();
-                break;
-            case MESSAGE_W:
-                moveW();
-                break;
-            case MESSAGE_NW:
-                moveNW();			
-                break;
-            default:
-                stop();
-                break;
+            case 0:  // Stationery
+                runStationeryLED();
+            case 1:  // Motion
+                runMotionLED();
         }
-        operateExternalLED();
+        
     }
 }
 
@@ -160,6 +137,11 @@ void tBrain(void *arguement) {
     }
 }
 
+// Initialize event flags to synchornize threads
+void initEvents(){
+    events_flags_id = osEventFlagsNew(NULL);
+}
+
 void initRobotComponents(void) {
     initUART2(BAUD_RATE);
     initExternalLED();
@@ -172,7 +154,7 @@ int main(void) {
     initRobotComponents();
     initPWM();
 
-    events_flags_id = osEventFlagsNew(NULL); // Initialize event flags to synchornize threads
+    initEvents();
 
     osKernelInitialize();				 // Initialize CMSIS-RTOS
     osThreadNew(tBrain, NULL, NULL);

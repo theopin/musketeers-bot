@@ -1,13 +1,5 @@
+#include "myMotor.h"
 #include "MKL25Z4.h"                    // Device header
-
-#define PTB0_Pin 0
-#define PTB1_Pin 1
-#define PTB2_Pin 2
-#define PTB3_Pin 3
-#define PTD0_Pin 0
-#define PTD2_Pin 2
-#define PTD3_Pin 3
-#define PTD5_Pin 5
 
 void configurePWMModeForPortB(int pin) {
     PORTB->PCR[pin] &= ~PORT_PCR_MUX_MASK;
@@ -75,7 +67,8 @@ void initPWM(void) {
     setEdgedAlignedPWMAngHighTruePulse(&(TPM2_C0SC));
     setEdgedAlignedPWMAngHighTruePulse(&(TPM2_C1SC));
 }
-//	                LEFT	      LEFT	   LEFT	         LEFT	     RIGHT	  RIGHT	        RIGHT	  RIGHT
+
+//	                   LEFT	       LEFT	           LEFT	         LEFT	     RIGHT	      RIGHT	        RIGHT	   RIGHT
 void changeAllFourPWM(double T1C0, double T1C1, double T2C0, double T2C1, double T0C0, double T0C2, double T0C3, double T0C5) {
     double fr_multiplier = 75;
     double fl_multiplier = 70;

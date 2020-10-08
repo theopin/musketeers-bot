@@ -18,5 +18,5 @@ typedef enum {
 typedef enum {
     MESSAGE_MOTOR_EVENT_FLAG_MASK  = 0b11111,
     MESSAGE_BT_EVENT_FLAG_MASK    = 0b100000,
-    MESSAGE_BACK_LED_EVENT_FLAG_MASK  = 0b1000000    
+    MESSAGE_EXT_LED_EVENT_FLAG_MASK  = 0b1000000    
 } message_event_flags;
