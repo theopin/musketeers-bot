@@ -9,7 +9,7 @@ typedef enum {
     BLUE = BLUE_LED
 }led_colors_t;
 
-void initInternalLED();
+void initInternalLED(void);
 void toggleLED(led_colors_t color);
 
 

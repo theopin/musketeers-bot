@@ -22,7 +22,6 @@ void setCountModeAndPreScalar(__IO uint32_t *timer) {
     *timer &= ~(TPM_SC_CPWMS_MASK);
 }
 
-/* initPWM() */
 void initPWM(void) {
     // Enable clock gating for port b and d
     SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;

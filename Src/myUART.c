@@ -2,6 +2,12 @@
 #include "MKL25Z4.h"
 #include "myMessageList.h"
 
+Q_T rxQ;
+
+Q_T* getReceiveBuffer(void) {
+    return &rxQ;
+}
+
 void initUART2(uint32_t baud_rate) {
     uint32_t divisor, busClock;
 
@@ -56,5 +62,4 @@ void UART2_IRQHandler(void) {
         if (!Q_Full(&rxQ))
             Q_Enqueue(&rxQ, UART2->D);
     }
-
 }

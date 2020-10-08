@@ -14,9 +14,11 @@ typedef enum {
     MESSAGE_BT_CONNECT = 0x0A
 } message_list_t;
 
-// Masks the bits associated with each task 
+// Masks the event flag bits associated with each task.
 typedef enum {
-    MESSAGE_MOTOR_EVENT_FLAG_MASK  = 0b11111,
-    MESSAGE_BT_EVENT_FLAG_MASK    = 0b100000,
-    MESSAGE_EXT_LED_EVENT_FLAG_MASK  = 0b1000000    
-} message_event_flags;
+    MOTOR_EF_MASK           = 0b11111,
+    BT_EF_MASK                  = 0b100000,
+    EXT_LED_BOT_MOVING_EF_MASK  = 0b1000000,
+    EXT_LED_BOT_STATIONERY_EF_MASK  = 0b10000000
+    
+} event_flags;

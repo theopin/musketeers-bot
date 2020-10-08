@@ -3,15 +3,17 @@
 #include "myOSFunctions.h"
 
 port_c_t greenLEDPins[NUM_GREEN_LEDS] = {PTC3, PTC4, PTC5, PTC6, PTC10, PTC11, PTC12, PTC13, PTC16, PTC17};
-int is_in_motion = 0;
+int is_moving = 0;
+int c = 0;
+int d = 0;
 
-void initExternalLED(){
+void initExternalLED() {
     int i = 0;
     // Enable Clock to PORTA and PORTC
     SIM->SCGC5 |= ((SIM_SCGC5_PORTA_MASK) | (SIM_SCGC5_PORTC_MASK));
 
     // Initalize GPIO Pins for the Green LED Strip
-    for(i = 0; i < NUM_GREEN_LEDS; i++){
+    for(i = 0; i < NUM_GREEN_LEDS; i++) {
         initGPIOPin(&(PORTC->PCR[greenLEDPins[i]]), &(PTC->PDDR), greenLEDPins[i], 1);
     }
 
@@ -19,26 +21,26 @@ void initExternalLED(){
     initGPIOPin(&(PORTA->PCR[PTA17]), &(PTA->PDDR), PTA17, 1);
 }
 
-void toggleRedLED() {
+void toggleRedLED(void) {
     PTA->PTOR = MASK(PTA17);
 }
 
-void onGreenLED(int led){
+void onGreenLED(int led) {
     PTC->PSOR = MASK(greenLEDPins[led]);
 }
 
-void offGreenLED(int led){
+void offGreenLED(int led) {
     PTC->PCOR = MASK(greenLEDPins[led]);
 }
 
-void clearLitGreenLED(){
+void clearAllGreenLED() {
     int i;
     for(i = 0; i < NUM_GREEN_LEDS; i++) {
-        setInactiveGreenLED(i);
+        offGreenLED(i);
     }
 }
 
-void nextTrailGreenLED() {
+void nextTrailGreenLED(void) {
     static int cur_led = 0;
     offGreenLED(cur_led);
     cur_led++;
@@ -46,46 +48,48 @@ void nextTrailGreenLED() {
     onGreenLED(cur_led);
 }
 
-void setAllGreenLED() {
+void setAllGreenLED(void) {
     int i;    
     for(i = 0; i < NUM_GREEN_LEDS; i++) {
         PTC->PSOR = MASK(greenLEDPins[i]);
     }
 }
 
-void signalSuccessConnection() {
+void signalSuccessConnection(void) {
     int reps_left = 2;
     while(reps_left) {
         setAllGreenLED();
         osDelay(CONNECTION_FLASH_DELAY);
-        clearLitGreenLED();
+        clearAllGreenLED();
 
         reps_left--;
         osDelay(CONNECTION_REPS_DELAY);
     }	
 }
 
-void runStationeryLED(){
-    is_in_motion = 0;
+void setStationeryLED() {
+    is_moving = 0;
 }
 
-void runMotionLED(){
-    is_in_motion = 1;
+void setMovingLED() {
+    is_moving = 1;
 }
 
-void runExternalLED(){
+void runExternalLED() {
     // Moving
-    if (is_in_motion){
-        clearLitGreenLED();
- 
+    if (is_moving) {
+        c++;
+        clearAllGreenLED();
+
         nextTrailGreenLED();
         toggleRedLED();
         osDelay(RED_RUN_DELAY);
-        
-    // Stationary
-    } else {  
+
+    // Stationery
+    } else {
+        d++;
         setAllGreenLED();
-        
+
         toggleRedLED();
         osDelay(RED_STOP_DELAY);
     }

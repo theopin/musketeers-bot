@@ -1,3 +1,5 @@
+#pragma once
+
 #include "MKL25Z4.h"
 #include "myCircularBuffer.h"
 
@@ -6,6 +8,5 @@
 #define UART_RX_PTE23 23
 #define UART2_INT_PRIO 128
 
-Q_T rxQ;
-
+Q_T* getReceiveBuffer(void);
 void initUART2(uint32_t baud_rate);
