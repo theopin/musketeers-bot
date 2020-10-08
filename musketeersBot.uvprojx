@@ -408,14 +408,14 @@
               <FilePath>.\Src\myUART.h</FilePath>
             </File>
             <File>
-              <FileName>myInternalLED.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Src\myInternalLED.h</FilePath>
+              <FileName>myInternalLED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\myInternalLED.c</FilePath>
             </File>
             <File>
-              <FileName>myExternalLED.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Src\myExternalLED.h</FilePath>
+              <FileName>myExternalLED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\myExternalLED.c</FilePath>
             </File>
             <File>
               <FileName>myOSFunctions.h</FileName>
@@ -428,14 +428,34 @@
               <FilePath>.\Src\myMotor.h</FilePath>
             </File>
             <File>
-              <FileName>myLED.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Src\myLED.h</FilePath>
+              <FileName>myUART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\myUART.c</FilePath>
             </File>
             <File>
-              <FileName>myAudio.h</FileName>
+              <FileName>myMotor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\myMotor.c</FilePath>
+            </File>
+            <File>
+              <FileName>myCommonFunctions.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\myCommonFunctions.c</FilePath>
+            </File>
+            <File>
+              <FileName>myCircularBuffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\myCircularBuffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>myExternalLED.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\Src\myAudio.h</FilePath>
+              <FilePath>.\Src\myExternalLED.h</FilePath>
+            </File>
+            <File>
+              <FileName>myInternalLED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Src\myInternalLED.h</FilePath>
             </File>
           </Files>
         </Group>
