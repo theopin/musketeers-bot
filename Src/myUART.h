@@ -1,5 +1,3 @@
-#pragma once
-
 #include "MKL25Z4.h"
 #include "myCircularBuffer.h"
 

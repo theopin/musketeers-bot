@@ -9,7 +9,7 @@ Q_T* getReceiveBuffer(void) {
 }
 
 void initUART2(uint32_t baud_rate) {
-    uint32_t divisor, busClock;
+    uint32_t divisor, bus_clock;
 
     // Enable clock to Port E and UART 2
     SIM->SCGC4 |= SIM_SCGC4_UART2_MASK;
@@ -29,8 +29,8 @@ void initUART2(uint32_t baud_rate) {
      * UART_BDH_SBR; Upper bits of the divisor
      * UART_BDL_SBR; Lower bits of the divisor
      */
-    busClock = (DEFAULT_SYSTEM_CLOCK)/2;
-    divisor = busClock / (baud_rate * 16);
+    bus_clock = (DEFAULT_SYSTEM_CLOCK)/2;
+    divisor = bus_clock / (baud_rate * 16);
     UART2->BDH = UART_BDH_SBR(divisor >> 8);
     UART2->BDL = UART_BDL_SBR(divisor);
 

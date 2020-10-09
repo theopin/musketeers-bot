@@ -7,6 +7,7 @@
 #define NUM_GREEN_LEDS 10
 
 #define PTA17 17
+
 typedef enum {
     PTC3 = 3,
     PTC4 = 4,

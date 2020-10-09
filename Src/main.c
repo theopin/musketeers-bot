@@ -10,8 +10,9 @@
 #include "myMessageList.h"
 //#include "myAudio.h"
 
-uint8_t message = 0; // TODO DEFINE BELOW AGAIN, HERE FOR DEBUG
-uint32_t flags = 0; // define below here as well
+// DEBUG vars
+uint8_t message = 0; // TODO define where first declare HERE FOR DEBUG
+uint32_t flags = 0; // TODO define where first declared as well
 int a = 0;
 int b = 0;
 int e = 0;
@@ -25,7 +26,6 @@ osEventFlagsId_t event_flags_id;
 void tLED(void *argument) {
     for (;;) {
         a++;
-        
         // Any set Motor bits in event flag signal indicate a moving robot
         if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_STATIONERY_EF_MASK) {
             osEventFlagsClear(event_flags_id, EXT_LED_BOT_STATIONERY_EF_MASK);
@@ -45,8 +45,7 @@ void tLED(void *argument) {
 void tMotorControl(void *argument) {
     for (;;) {
         b++;
-
-        // Waits for event flag that motor direction has changed
+        // Waits for event flag signalling that motor direction has changed
         osEventFlagsWait(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK, osFlagsWaitAll, EVENT_TIME_OUT);
         
         // Handles the change in direction event
@@ -106,9 +105,9 @@ void tBrain(void *arguement) {
         if (!Q_Empty(rxQ)) {
             message = Q_Dequeue(rxQ);
             
-            /* We set the appropriate flag to indicate a task needing handling
-              ,the relevant tasks will use this flag to know
-              when and what to run. */
+            /* Sets the appropriate flag to indicate a task needing, 
+                other threads will watch for the flag and handle it
+                accordingly*/
             switch (message) {
             // Movement
             case MESSAGE_STOP:
@@ -145,7 +144,7 @@ void tBrain(void *arguement) {
     }
 }
 
-// Initialize event flags to synchornize threads
+// Initialize event flags used to synchornize threads
 void initEvents() {
     event_flags_id = osEventFlagsNew(NULL);
     osEventFlagsClear(event_flags_id, 0xFFFF);
@@ -158,8 +157,8 @@ void initRobotComponents(void) {
     initInternalLED();
 }
 
+// System Initialization
 int main(void) {
-    // System Initialization
     SystemCoreClockUpdate();
     initRobotComponents();
     initPWM();

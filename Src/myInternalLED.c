@@ -28,6 +28,3 @@ void toggleLED(led_colors_t color) {
         PTB->PCOR = MASK(color);
     }
 }
-
-
-

@@ -9,11 +9,10 @@
 #define PTD3_Pin 3
 #define PTD5_Pin 5
 
-// Initializing Pwm to motors
+// Initializing functions
 void initPWM(void);
 
 // Movement functions
-
 void setMotorMoveDir(int dir);
 uint8_t getMotorMoveDir(void);
 void stop(void);

@@ -4,8 +4,6 @@
 
 port_c_t greenLEDPins[NUM_GREEN_LEDS] = {PTC3, PTC4, PTC5, PTC6, PTC10, PTC11, PTC12, PTC13, PTC16, PTC17};
 int is_moving = 0;
-int c = 0;
-int d = 0;
 
 void initExternalLED() {
     int i = 0;
@@ -78,7 +76,6 @@ void setMovingLED() {
 void runExternalLED() {
     // Moving
     if (is_moving) {
-        c++;
         clearAllGreenLED();
 
         nextTrailGreenLED();
@@ -87,7 +84,6 @@ void runExternalLED() {
 
     // Stationery
     } else {
-        d++;
         setAllGreenLED();
 
         toggleRedLED();
