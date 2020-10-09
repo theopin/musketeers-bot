@@ -10,7 +10,7 @@
 
 void initGPIOPin(__IO uint32_t *PCR, __IO uint32_t *PDDR, int pin, int isOutput){
     *PCR &= ~PORT_PCR_MUX_MASK;
-    *PCR |= PORT_PCR_MUX(1);
+    *PCR |= PORT_PCR_MUX(1); 
 
     if(isOutput)
         *PDDR |= (MASK(pin));

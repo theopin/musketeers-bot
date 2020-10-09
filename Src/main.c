@@ -10,11 +10,13 @@
 #include "myMessageList.h"
 //#include "myAudio.h"
 
-uint8_t message = 0; // TODO DEFINE BELOW AGAIN, HERE FOR DEBUG	
+uint8_t message = 0; // TODO DEFINE BELOW AGAIN, HERE FOR DEBUG
+uint32_t flags = 0; // define below here as well
 int a = 0;
 int b = 0;
 int e = 0;
 int f = 0;
+int g = 0;
 
 osEventFlagsId_t event_flags_id;
 /*----------------------------------------------------------------------------
@@ -22,37 +24,17 @@ osEventFlagsId_t event_flags_id;
  *---------------------------------------------------------------------------*/
 void tLED(void *argument) {
     for (;;) {
+        a++;
+        
         // Any set Motor bits in event flag signal indicate a moving robot
-        static int isRobotMoving = 0;
         if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_STATIONERY_EF_MASK) {
             osEventFlagsClear(event_flags_id, EXT_LED_BOT_STATIONERY_EF_MASK);
-            isRobotMoving = 0;
+            setStationeryLED();
         } else if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_MOVING_EF_MASK) {
             osEventFlagsClear(event_flags_id, EXT_LED_BOT_MOVING_EF_MASK);
-            isRobotMoving = 1;
-        }
-        
-        e = osEventFlagsGet(event_flags_id);
-        
-        // Handles the event
-        switch(isRobotMoving) {
-        // Stationery
-        case 0:  
-            a++;
-            setStationeryLED();
-            break;
-        
-        // Moving
-        case 1:  
-            b++;
             setMovingLED();
-            break;
-        
-        default:
-            f++;
-            setStationeryLED();
-            break;
         }
+        
         runExternalLED();
     }
 }
@@ -61,15 +43,17 @@ void tLED(void *argument) {
  * Thread - Motor Control
  *---------------------------------------------------------------------------*/
 void tMotorControl(void *argument) {
-    uint32_t flags;
     for (;;) {
-        // Wait till motor specific flags are set but does not clear them
-        flags = MOTOR_EF_MASK & osEventFlagsWait(event_flags_id, MOTOR_EF_MASK, osFlagsWaitAny, osWaitForever);
-        // Handles the event
-        switch(flags) {
+        b++;
+
+        // Waits for event flag that motor direction has changed
+        osEventFlagsWait(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK, osFlagsWaitAll, EVENT_TIME_OUT);
+        
+        // Handles the change in direction event
+        switch(getMotorMoveDir()) {
         case MESSAGE_STOP:
             stop();
-            break;  
+            break;
         case MESSAGE_N:
             moveN();
             break;
@@ -92,7 +76,7 @@ void tMotorControl(void *argument) {
             moveW();
             break;
         case MESSAGE_NW:
-            moveNW();			
+            moveNW();
             break;
         default:
             stop();
@@ -106,23 +90,21 @@ void tMotorControl(void *argument) {
  *---------------------------------------------------------------------------*/
 void tAudio(void *argument) {
     for (;;) {
+        g++;
     }
 }
-
 
 /*----------------------------------------------------------------------------
  * Thread - Serial Data Decoder
  *---------------------------------------------------------------------------*/
 void tBrain(void *arguement) {
-    
+
     for (;;) {
-      //  uint8_t message;
+        e++;
+        
         Q_T* rxQ = getReceiveBuffer();
-        Q_Enqueue( rxQ, MESSAGE_STOP); //debug
         if (!Q_Empty(rxQ)) {
             message = Q_Dequeue(rxQ);
-            
-            osEventFlagsClear(event_flags_id, 0xFFFF); // clears all flags
             
             /* We set the appropriate flag to indicate a task needing handling
               ,the relevant tasks will use this flag to know
@@ -130,8 +112,9 @@ void tBrain(void *arguement) {
             switch (message) {
             // Movement
             case MESSAGE_STOP:
+                setMotorMoveDir(MESSAGE_STOP);
                 osEventFlagsSet(event_flags_id, EXT_LED_BOT_STATIONERY_EF_MASK);
-                osEventFlagsSet(event_flags_id, message);
+                osEventFlagsSet(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK);
                 break;
             case MESSAGE_N:  // Fallthrough
             case MESSAGE_NE: // Fallthrough
@@ -140,45 +123,40 @@ void tBrain(void *arguement) {
             case MESSAGE_S:  // Fallthrough
             case MESSAGE_SW: // Fallthrough
             case MESSAGE_W:  // Fallthrough
-            case MESSAGE_NW: 
+            case MESSAGE_NW:
+                setMotorMoveDir(message);
                 osEventFlagsSet(event_flags_id, EXT_LED_BOT_MOVING_EF_MASK);
-                osEventFlagsSet(event_flags_id, message);
-                break;	
-            
+                osEventFlagsSet(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK);
+                break;
+
             // Bluetooth
             case MESSAGE_BT_CONNECT:
-                osEventFlagsSet(event_flags_id, BT_EF_MASK); 			
-                break;	
-
-                // toggleLED(GREEN);
-                //   signalSuccessConnection();
-                //				osThreadNew(greenLEDThread, NULL, NULL);
-                //				osThreadNew(redLEDThread, NULL, NULL);
-                //				break;
+                osEventFlagsSet(event_flags_id, BT_CONNECT_EF_MASK);
+                break;
             
             // Bad command
             default:
+                setMotorMoveDir(MESSAGE_STOP);
                 osEventFlagsSet(event_flags_id, EXT_LED_BOT_STATIONERY_EF_MASK);
-                osEventFlagsSet(event_flags_id, MESSAGE_STOP);				
+                osEventFlagsSet(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK);
                 break;
             }
-
-            // This task is BLOCKED until all the flags have been handled or TIME OUT
-             osEventFlagsWait(event_flags_id, 0x0, osFlagsWaitAll, EVENT_TIME_OUT); 
-        } 
+        }
     }
 }
 
 // Initialize event flags to synchornize threads
 void initEvents() {
     event_flags_id = osEventFlagsNew(NULL);
+    osEventFlagsClear(event_flags_id, 0xFFFF);
+    osEventFlagsSet(event_flags_id, ALL_EVENTS_HANDLED_EF_MASK);
 }
 
 void initRobotComponents(void) {
     initUART2(BAUD_RATE);
     initExternalLED();
     initInternalLED();
-}	
+}
 
 int main(void) {
     // System Initialization
@@ -188,10 +166,12 @@ int main(void) {
 
     osKernelInitialize();				 // Initialize CMSIS-RTOS
     initEvents();                        // Note must be done AFTER initializing kernel
+
     osThreadNew(tBrain, NULL, NULL);
     osThreadNew(tMotorControl, NULL, NULL);
     osThreadNew(tAudio,  NULL, NULL);
     osThreadNew(tLED, NULL, NULL);
+
     osKernelStart();					  // Start thread execution
     for (;;) {}
 }

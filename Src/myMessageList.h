@@ -1,5 +1,7 @@
 #pragma once
 
+#define EMPTY_EVENT_FLAGS 0x0000
+
 // Possible messages received via uart
 typedef enum {
     MESSAGE_STOP = 0x00,
@@ -16,9 +18,10 @@ typedef enum {
 
 // Masks the event flag bits associated with each task.
 typedef enum {
-    MOTOR_EF_MASK           = 0b11111,
-    BT_EF_MASK                  = 0b100000,
-    EXT_LED_BOT_MOVING_EF_MASK  = 0b1000000,
-    EXT_LED_BOT_STATIONERY_EF_MASK  = 0b10000000
-    
+    ALL_EVENTS_HANDLED_EF_MASK = 0b1,
+    MOTOR_DIR_CHANGE_EF_MASK = 0b10,
+    BT_CONNECT_EF_MASK = 0b100,
+    EXT_LED_BOT_MOVING_EF_MASK = 0b1000,
+    EXT_LED_BOT_STATIONERY_EF_MASK = 0b10000
 } event_flags;
+

@@ -1,6 +1,14 @@
 #include "myMotor.h"
-#include "MKL25Z4.h"                    // Device header
 
+uint8_t motor_move_dir;
+
+void setMotorMoveDir(int dir){
+    motor_move_dir = dir;
+}
+
+uint8_t getMotorMoveDir(){
+    return motor_move_dir;
+}
 void configurePWMModeForPortB(int pin) {
     PORTB->PCR[pin] &= ~PORT_PCR_MUX_MASK;
     PORTB->PCR[pin] |= PORT_PCR_MUX(3);

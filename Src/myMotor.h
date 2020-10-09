@@ -1,3 +1,5 @@
+#include "MKL25Z4.h"
+
 #define PTB0_Pin 0
 #define PTB1_Pin 1
 #define PTB2_Pin 2
@@ -11,6 +13,9 @@
 void initPWM(void);
 
 // Movement functions
+
+void setMotorMoveDir(int dir);
+uint8_t getMotorMoveDir(void);
 void stop(void);
 void moveN(void);
 void moveNE(void);
