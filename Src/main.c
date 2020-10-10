@@ -8,7 +8,7 @@
 #include "myMotor.h"
 #include "myUART.h"
 #include "myMessageList.h"
-//#include "myAudio.h"
+#include "myAudio.h"
 
 // DEBUG vars
 uint8_t message = 0; // TODO define where first declare HERE FOR DEBUG
@@ -19,7 +19,7 @@ int e = 0;
 int f = 0;
 int g = 0;
 
-osEventFlagsId_t event_flags_id;
+static osEventFlagsId_t event_flags_id;
 /*----------------------------------------------------------------------------
  * Thread - LED Control
  *---------------------------------------------------------------------------*/
@@ -155,20 +155,22 @@ void initRobotComponents(void) {
     initUART2(BAUD_RATE);
     initExternalLED();
     initInternalLED();
+    
+    initMotorPWM();
+    initAudio();
 }
 
 // System Initialization
 int main(void) {
     SystemCoreClockUpdate();
     initRobotComponents();
-    initPWM();
 
     osKernelInitialize();				 // Initialize CMSIS-RTOS
     initEvents();                        // Note must be done AFTER initializing kernel
 
     osThreadNew(tBrain, NULL, NULL);
     osThreadNew(tMotorControl, NULL, NULL);
-    osThreadNew(tAudio,  NULL, NULL);
+    osThreadNew(tAudio,  NULL, NULL); // TODO probably need to set to high priority, need to change notes exactly at deadline
     osThreadNew(tLED, NULL, NULL);
 
     osKernelStart();					  // Start thread execution

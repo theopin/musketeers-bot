@@ -1,8 +1,6 @@
 #include "myInternalLED.h"
 #include "myCommonFunctions.h"
 
-led_colors_t color_sets[3] = {RED, GREEN, BLUE};
-
 void offInternalLED() {  
     PTD->PSOR = MASK(BLUE_LED);
     PTB->PSOR = (MASK(RED_LED) | MASK(GREEN_LED));

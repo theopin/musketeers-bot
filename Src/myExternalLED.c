@@ -2,8 +2,8 @@
 #include "myCommonFunctions.h"
 #include "myOSFunctions.h"
 
-port_c_t greenLEDPins[NUM_GREEN_LEDS] = {PTC3, PTC4, PTC5, PTC6, PTC10, PTC11, PTC12, PTC13, PTC16, PTC17};
-int is_moving = 0;
+static port_c_t greenLEDPins[NUM_GREEN_LEDS] = {PTC3, PTC4, PTC5, PTC6, PTC10, PTC11, PTC12, PTC13, PTC16, PTC17};
+static int is_moving = 0;
 
 void initExternalLED() {
     int i = 0;

@@ -2,7 +2,7 @@
 #include "MKL25Z4.h"
 #include "myMessageList.h"
 
-Q_T rxQ;
+static Q_T rxQ;
 
 Q_T* getReceiveBuffer(void) {
     return &rxQ;

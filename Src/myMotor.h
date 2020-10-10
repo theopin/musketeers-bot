@@ -10,7 +10,7 @@
 #define PTD5_Pin 5
 
 // Initializing functions
-void initPWM(void);
+void initMotorPWM(void);
 
 // Movement functions
 void setMotorMoveDir(int dir);

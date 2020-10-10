@@ -1,6 +1,6 @@
 #include "myMotor.h"
 
-uint8_t motor_move_dir;
+static uint8_t motor_move_dir;
 
 void setMotorMoveDir(int dir){
     motor_move_dir = dir;
@@ -30,7 +30,7 @@ void setCountModeAndPreScalar(__IO uint32_t *timer) {
     *timer &= ~(TPM_SC_CPWMS_MASK);
 }
 
-void initPWM(void) {
+void initMotorPWM(void) {
     // Enable clock gating for port b and d
     SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
     SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
