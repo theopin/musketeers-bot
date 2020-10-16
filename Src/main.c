@@ -97,7 +97,6 @@ void tAudio(void *argument) {
  * Thread - Serial Data Decoder
  *---------------------------------------------------------------------------*/
 void tBrain(void *arguement) {
-
     for (;;) {
         e++;
         
@@ -162,7 +161,7 @@ void initRobotComponents(void) {
 
 // System Initialization
 int main(void) {
-    SystemCoreClockUpdate();
+     SystemCoreClockUpdate();
     initRobotComponents();
 
     osKernelInitialize();				 // Initialize CMSIS-RTOS
@@ -174,5 +173,6 @@ int main(void) {
     osThreadNew(tLED, NULL, NULL);
 
     osKernelStart();					  // Start thread execution
-    for (;;) {}
+    for (;;) {
+    a++;}
 }

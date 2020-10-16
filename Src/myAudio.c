@@ -106,7 +106,7 @@ void changeBuzzerFrequency(int freq) {
 }
   
 void changeBuzzerVolume(double target_volume) {
-    TPM0_C0V =  TPM0->MOD * target_volume;
+    TPM0_C4V =  TPM0->MOD * target_volume;
     buzzer_volume = target_volume;
 }
 
@@ -186,39 +186,6 @@ void startSuccessFx() {
     startSound(SUCCESS_FX);
 }
 
-void initAudioPWM() {
-    // Enable Clock for portC. This starts the port
-    SIM_SCGC5 |= SIM_SCGC5_PORTC_MASK;
-    
-    // Set multiplexing of pins to TPM0_CH0 config
-    PORTC->PCR[PTC1] &= ~PORT_PCR_MUX_MASK;
-    PORTC->PCR[PTC1] |= PORT_PCR_MUX(4);
-    
-    // enables the TMP0 Clock
-    SIM_SCGC6 |= SIM_SCGC6_TPM0_MASK;
-    
-    // Selects the Clock source for the TPM pins to be OSCERCLK, an internal oscillator
-    SIM->SOPT2 &= ~SIM_SOPT2_TPMSRC_MASK;
-    SIM->SOPT2 |= SIM_SOPT2_TPMSRC(1);
-    
-    // MOD is 16 bit val up to which the counter counts, at which it resets to 0
-    // Note how all channels under TPM0 use the same MOD.
-    // CNV is used as a match value when outputting.
-    TPM0->MOD = 7500;
-    TPM0_C0V = 3400;
-    
-    // Cmod controls use of internal (use this) or external clock
-    // PS is a prescaler value of 128  
-    TPM0->SC &= ~((TPM_SC_CMOD_MASK) | (TPM_SC_PS_MASK));
-    TPM0->SC |= (TPM_SC_CMOD(1) | TPM_SC_PS(7));
-    
-    // Count up
-    TPM0->SC &= ~(TPM_SC_CPWMS_MASK);
-    
-    //  Edge-aligned PWM MODE High-true pulses (clear Output on match, set Output on reload)
-    TPM0_C0SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
-    TPM0_C0SC |= (TPM_CnSC_ELSB(1)) | (TPM_CnSC_MSB(1));
-}
 
 
 void initAudioPIT() {
@@ -244,5 +211,7 @@ void initAudioPIT() {
 
 void initAudio(){
     initAudioPIT();
-    initAudioPWM();
+    //initAudioPWM();
+    
+    startSong();
 }   

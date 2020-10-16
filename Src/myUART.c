@@ -44,10 +44,10 @@ void initUART2(uint32_t baud_rate) {
     // Interrupt configuration
     NVIC_SetPriority(UART2_IRQn, 2);
 
-    NVIC_ClearPendingIRQ(UART2_IRQn);
-    NVIC_EnableIRQ(UART2_IRQn);
+    NVIC_ClearPendingIRQ(UART2_IRQn );
+    NVIC_EnableIRQ(UART2_IRQn); // isr enable
 
-    UART2->C2 &= ((UART_C2_TIE_MASK) | (UART_C2_RIE_MASK));
+    UART2->C2 &= ((UART_C2_TIE_MASK) | (UART_C2_RIE_MASK)); // interrupt enable
     UART2->C2 |= ((UART_C2_RIE_MASK));
 
     // Enable transmitter and Receiver

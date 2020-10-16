@@ -1,8 +1,8 @@
 #include "myCommonFunctions.h"
 
-#define PTC1 1
+#define PTC8 8
 #define PIT_CHANNEL 0
-#define SONG_PLAYBACK_RATE 4000
+#define SONG_PLAYBACK_RATE 2000
 #define MIN_BUZZER_VOL 0.005
 #define FULL_BUZZER_VOL 0.1
 #define BUZZER_VOL_DECAY .935

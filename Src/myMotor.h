@@ -8,6 +8,7 @@
 #define PTD2_Pin 2
 #define PTD3_Pin 3
 #define PTD5_Pin 5
+#define PTC8_Pin 8 
 
 // Initializing functions
 void initMotorPWM(void);

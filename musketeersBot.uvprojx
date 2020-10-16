@@ -457,6 +457,16 @@
               <FileType>5</FileType>
               <FilePath>.\Src\myInternalLED.h</FilePath>
             </File>
+            <File>
+              <FileName>myAudio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\myAudio.c</FilePath>
+            </File>
+            <File>
+              <FileName>myAudio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Src\myAudio.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
