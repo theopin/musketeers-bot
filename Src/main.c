@@ -15,9 +15,13 @@ uint8_t message = 0; // TODO define where first declare HERE FOR DEBUG
 uint32_t flags = 0; // TODO define where first declared as well
 int a = 0;
 int b = 0;
+int d = 0;
 int e = 0;
 int f = 0;
 int g = 0;
+int start_bt = 0;
+int start_song = 0;
+uint32_t flags_music = 0; 
 
 static osEventFlagsId_t event_flags_id;
 /*----------------------------------------------------------------------------
@@ -90,6 +94,24 @@ void tMotorControl(void *argument) {
 void tAudio(void *argument) {
     for (;;) {
         g++;
+        if (osEventFlagsGet(event_flags_id) & BT_CONNECT_EF_MASK) {
+            osEventFlagsClear(event_flags_id, BT_CONNECT_EF_MASK);
+            start_bt++;
+            startSuccessFx();
+
+        } /*else if (osEventFlagsGet(event_flags_id) & START_CHALLENGE_MASK) {
+            osEventFlagsClear(event_flags_id, START_CHALLENGE_MASK);
+            start_song++;
+            startSong();
+            
+        } else if (osEventFlagsGet(event_flags_id) & STOP_CHALLENGE_MASK) {
+            osEventFlagsClear(event_flags_id, STOP_CHALLENGE_MASK);
+
+        } else if (osEventFlagsGet(event_flags_id) & START_VICTORY_MASK) {
+            osEventFlagsClear(event_flags_id, START_VICTORY_MASK);
+
+        }*/
+
     }
 }
 
@@ -99,10 +121,9 @@ void tAudio(void *argument) {
 void tBrain(void *arguement) {
     for (;;) {
         e++;
-        
-        Q_T* rxQ = getReceiveBuffer();
-        if (!Q_Empty(rxQ)) {
-            message = Q_Dequeue(rxQ);
+       // Q_T* rxQ = getReceiveBuffer();
+        //if (!Q_Empty(rxQ)) {
+            //message = Q_Dequeue(rxQ);
             
             /* Sets the appropriate flag to indicate a task needing, 
                 other threads will watch for the flag and handle it
@@ -130,8 +151,23 @@ void tBrain(void *arguement) {
             // Bluetooth
             case MESSAGE_BT_CONNECT:
                 osEventFlagsSet(event_flags_id, BT_CONNECT_EF_MASK);
-                break;
+                osEventFlagsSet(event_flags_id, BT_CONNECT_SUCCESS_MASK);
             
+                message = 0;
+                break;
+            case MESSAGE_START_CHALLENGE_MUSIC:
+                osEventFlagsSet(event_flags_id, START_CHALLENGE_MASK);
+
+                message = 0;
+                break;
+            case MESSAGE_STOP_CHALLENGE_MUSIC:
+                osEventFlagsSet(event_flags_id, STOP_CHALLENGE_MASK);
+                message = 0;
+                break;
+            case MESSAGE_START_VICTORY_TUNE:
+                osEventFlagsSet(event_flags_id, START_VICTORY_MASK);
+                message = 0;
+                break;
             // Bad command
             default:
                 setMotorMoveDir(MESSAGE_STOP);
@@ -139,12 +175,12 @@ void tBrain(void *arguement) {
                 osEventFlagsSet(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK);
                 break;
             }
-        }
+        //}
     }
 }
 
 // Initialize event flags used to synchornize threads
-void initEvents() {
+void initEvent() {
     event_flags_id = osEventFlagsNew(NULL);
     osEventFlagsClear(event_flags_id, 0xFFFF);
     osEventFlagsSet(event_flags_id, ALL_EVENTS_HANDLED_EF_MASK);
@@ -165,8 +201,8 @@ int main(void) {
     initRobotComponents();
 
     osKernelInitialize();				 // Initialize CMSIS-RTOS
-    initEvents();                        // Note must be done AFTER initializing kernel
-
+    initEvent();                        // Note must be done AFTER initializing kernel
+    
     osThreadNew(tBrain, NULL, NULL);
     osThreadNew(tMotorControl, NULL, NULL);
     osThreadNew(tAudio,  NULL, NULL); // TODO probably need to set to high priority, need to change notes exactly at deadline

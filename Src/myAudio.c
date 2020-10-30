@@ -212,6 +212,4 @@ void initAudioPIT() {
 void initAudio(){
     initAudioPIT();
     //initAudioPWM();
-    
-    startSong();
 }   
