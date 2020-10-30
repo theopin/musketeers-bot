@@ -1,6 +1,6 @@
 #include "myMotor.h"
 
-static uint8_t motor_move_dir;
+uint8_t motor_move_dir;
 
 void setMotorMoveDir(int dir){
     motor_move_dir = dir;
@@ -113,12 +113,12 @@ void initAudioPWM() {
 }
 */
 
-//	                   LEFT	       LEFT	           RIGHT	         RIGHT	     RIGHT	      RIGHT	        RIGHT	   RIGHT
+//	                   LB	          LF	           RB	         RF	     RIGHT	      RIGHT	        RIGHT	   RIGHT
 void changeAllFourPWM(double T1C0, double T1C1, double T2C0, double T2C1) {//, double T0C0, double T0C2, double T0C3, double T0C5) {
-    double fr_multiplier = 75;
-    double fl_multiplier = 70;
-    double br_multiplier = 75;
-    double bl_multiplier = 70;
+    double fr_multiplier = 100;
+    double fl_multiplier = 100;
+    double br_multiplier = 100;
+    double bl_multiplier = 100;
     TPM1_C0V = (int)(T1C0 * fl_multiplier);
     TPM1_C1V = (int)(T1C1 * fl_multiplier);
     TPM2_C0V = (int)(T2C0 * br_multiplier);
@@ -138,7 +138,7 @@ void moveN(void) {
 }
 
 void moveNE(void) {
-    changeAllFourPWM(0, 1, 0, 0.55);//, 0, 0.55, 0, 0.55);
+    changeAllFourPWM(0, 1, 0, 0.40);//, 0, 0.55, 0, 0.55);
 }
 
 void moveE(void) {
@@ -146,7 +146,7 @@ void moveE(void) {
 }
 
 void moveSE(void) {
-    changeAllFourPWM(0, 0, 0, 0);//, 0, 0, 0, 0);
+    changeAllFourPWM(1, 0, 0.40, 0);//, 0, 0, 0, 0);
 }
 
 void moveS(void) {
@@ -154,7 +154,7 @@ void moveS(void) {
 }
 
 void moveSW(void) {
-    changeAllFourPWM(0, 1, 0, 0);//, 0, 0, 0, 0);
+    changeAllFourPWM(0.40, 0, 1, 0);//, 0, 0, 0, 0);
 }
 
 void moveW(void) {
@@ -162,7 +162,7 @@ void moveW(void) {
 }
 
 void moveNW(void) {
-    changeAllFourPWM(0, 0.55, 0, 1);//, 0, 1, 0, 1);
+    changeAllFourPWM(0, 0.40, 0, 1);//, 0, 1, 0, 1);
 }
 
 int set_pwm_fl_multipler(int message) {

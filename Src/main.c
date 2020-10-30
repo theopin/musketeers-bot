@@ -47,7 +47,7 @@ void tMotorControl(void *argument) {
         b++;
         // Waits for event flag signalling that motor direction has changed
         osEventFlagsWait(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK, osFlagsWaitAll, EVENT_TIME_OUT);
-        
+        setMotorMoveDir(message);
         // Handles the change in direction event
         switch(getMotorMoveDir()) {
         case MESSAGE_STOP:
@@ -161,7 +161,7 @@ void initRobotComponents(void) {
 
 // System Initialization
 int main(void) {
-     SystemCoreClockUpdate();
+  	SystemCoreClockUpdate();
     initRobotComponents();
 
     osKernelInitialize();				 // Initialize CMSIS-RTOS
