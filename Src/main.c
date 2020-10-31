@@ -96,12 +96,12 @@ void tAudio(void *argument) {
         g++;
         if (osEventFlagsGet(event_flags_id) & BT_CONNECT_EF_MASK) {
             osEventFlagsClear(event_flags_id, BT_CONNECT_EF_MASK);
-            start_bt++;
+            start_bt++; //debug
             startSuccessFx();
 
         } else if (osEventFlagsGet(event_flags_id) & START_CHALLENGE_MASK) {
             osEventFlagsClear(event_flags_id, START_CHALLENGE_MASK);
-            start_song++;
+            start_song++;   //debug
             startSong();
             
         } /*else if (osEventFlagsGet(event_flags_id) & STOP_CHALLENGE_MASK) {
@@ -153,20 +153,20 @@ void tBrain(void *arguement) {
                 osEventFlagsSet(event_flags_id, BT_CONNECT_EF_MASK);
                 osEventFlagsSet(event_flags_id, BT_CONNECT_SUCCESS_MASK);
             
-                message = 0;
+                message = 0;    //debug
                 break;
             case MESSAGE_START_CHALLENGE_MUSIC:
                 osEventFlagsSet(event_flags_id, START_CHALLENGE_MASK);
 
-                message = 0;
+                message = 0;    //debug
                 break;
             case MESSAGE_STOP_CHALLENGE_MUSIC:
                 osEventFlagsSet(event_flags_id, STOP_CHALLENGE_MASK);
-                message = 0;
+                message = 0;    //debug
                 break;
             case MESSAGE_START_VICTORY_TUNE:
                 osEventFlagsSet(event_flags_id, START_VICTORY_MASK);
-                message = 0;
+                message = 0;    //debug
                 break;
             // Bad command
             default:
