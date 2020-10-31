@@ -99,12 +99,12 @@ void tAudio(void *argument) {
             start_bt++;
             startSuccessFx();
 
-        } /*else if (osEventFlagsGet(event_flags_id) & START_CHALLENGE_MASK) {
+        } else if (osEventFlagsGet(event_flags_id) & START_CHALLENGE_MASK) {
             osEventFlagsClear(event_flags_id, START_CHALLENGE_MASK);
             start_song++;
             startSong();
             
-        } else if (osEventFlagsGet(event_flags_id) & STOP_CHALLENGE_MASK) {
+        } /*else if (osEventFlagsGet(event_flags_id) & STOP_CHALLENGE_MASK) {
             osEventFlagsClear(event_flags_id, STOP_CHALLENGE_MASK);
 
         } else if (osEventFlagsGet(event_flags_id) & START_VICTORY_MASK) {
