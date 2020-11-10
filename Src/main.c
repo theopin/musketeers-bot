@@ -21,6 +21,8 @@ int f = 0;
 int g = 0;
 int start_bt = 0;
 int start_song = 0;
+int stop_song = 0;
+int victory_tune = 0;
 uint32_t flags_music = 0; 
 
 static osEventFlagsId_t event_flags_id;
@@ -104,12 +106,15 @@ void tAudio(void *argument) {
             start_song++;   //debug
             startSong();
             
-        } /*else if (osEventFlagsGet(event_flags_id) & STOP_CHALLENGE_MASK) {
+        } else if (osEventFlagsGet(event_flags_id) & STOP_CHALLENGE_MASK) {
             osEventFlagsClear(event_flags_id, STOP_CHALLENGE_MASK);
+            stop_song++;
+            stopSong();
 
-        } else if (osEventFlagsGet(event_flags_id) & START_VICTORY_MASK) {
+        }/* else if (osEventFlagsGet(event_flags_id) & START_VICTORY_MASK) {
             osEventFlagsClear(event_flags_id, START_VICTORY_MASK);
-
+            start_victory++;    
+            startVictory();
         }*/
 
     }

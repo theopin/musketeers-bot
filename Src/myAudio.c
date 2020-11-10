@@ -1,12 +1,27 @@
 #include "myAudio.h"
 #include "MKL25Z4.h"
 
+static int stop_song_notes[] = {
+    PAUSE
+};
+static int stop_song_beats[] = { 
+    -1
+};
+
+static int victory_notes[] = {
+    F4, G4, AS4
+};
+static int victory_beats[] = { 
+    4, 4, 8
+};
+
 static int success_fx_notes[] = {
     F4, G4, AS4
 };
 static int success_fx_beats[] = { 
     4, 4, 8
 };
+
 
 static int how_you_like_that_notes[] = {
 B4, C5, A4,
@@ -164,6 +179,16 @@ void startSound(int sound_id) {
             cur_song_beats = success_fx_beats;
             cur_song_size = sizeof(success_fx_notes) / sizeof (int);
             break;
+        case STOP_SONG:
+            cur_song_notes = stop_song_notes;
+            cur_song_beats = stop_song_beats;
+            cur_song_size = sizeof(stop_song_notes) / sizeof (int);
+            break;
+        case VICTORY_TUNE:
+            cur_song_notes = victory_notes;
+            cur_song_beats = victory_beats;
+            cur_song_size = sizeof(victory_notes) / sizeof (int);
+            break;
         default:
             break;
     }
@@ -181,11 +206,20 @@ void startSong() {
     startSound(HOW_YOU_LIKE_THAT);
 }
 
+void stopSong() {
+    is_sound_looping = false;
+    startSound(STOP_SONG);
+}
+
 void startSuccessFx() {
     is_sound_looping = false;
     startSound(SUCCESS_FX);
 }
 
+void startVictoryTune() {
+    is_sound_looping = false;
+    startSound(VICTORY_TUNE);
+}
 
 
 void initAudioPIT() {
@@ -211,5 +245,5 @@ void initAudioPIT() {
 
 void initAudio(){
     initAudioPIT();
-    //initAudioPWM();
+    stopSong();
 }   
