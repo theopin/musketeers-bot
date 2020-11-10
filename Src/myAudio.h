@@ -21,7 +21,6 @@ typedef enum {
 } interrupt_triggers;
 
 typedef enum {
-    PAUSE_ULTI = -700,
     PAUSE = 0,
     E4 = 329,
     F4 = 349,
@@ -31,9 +30,10 @@ typedef enum {
     B4 = 494,
     C5 = 523,
     D5 = 587 ,
+    DS5= 622,
     E5 = 659 ,
     F5 = 698,
-    FS5 = 740,
+    FS5 = 740, 
     G5 = 783 ,
     AF5 = 830,
     A5 = 880 ,
@@ -58,4 +58,4 @@ void initAudio(void);
 void stopSong(void);
 void startSuccessFx(void);
 void startSong(void);
-void startVictory(void);
+void startVictoryTune(void);

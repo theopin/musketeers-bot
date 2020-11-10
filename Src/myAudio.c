@@ -5,14 +5,16 @@ static int stop_song_notes[] = {
     PAUSE
 };
 static int stop_song_beats[] = { 
-    -1
+    0
 };
 
 static int victory_notes[] = {
-    F4, G4, AS4
+    G5, PAUSE, AF5, F5,
+    DS5, PAUSE, F5, DS5,
 };
 static int victory_beats[] = { 
-    4, 4, 8
+    4, 8, 4, 4, 8,
+    4, 8, 4, 12, 8
 };
 
 static int success_fx_notes[] = {

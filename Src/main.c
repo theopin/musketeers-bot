@@ -111,11 +111,11 @@ void tAudio(void *argument) {
             stop_song++;
             stopSong();
 
-        }/* else if (osEventFlagsGet(event_flags_id) & START_VICTORY_MASK) {
+        } else if (osEventFlagsGet(event_flags_id) & START_VICTORY_MASK) {
             osEventFlagsClear(event_flags_id, START_VICTORY_MASK);
-            start_victory++;    
-            startVictory();
-        }*/
+            victory_tune++;    
+            startVictoryTune();
+        }
 
     }
 }
