@@ -125,10 +125,10 @@ void tAudio(void *argument) {
  *---------------------------------------------------------------------------*/
 void tBrain(void *arguement) {
     for (;;) {
-        e++;
-       // Q_T* rxQ = getReceiveBuffer();
-        //if (!Q_Empty(rxQ)) {
-            //message = Q_Dequeue(rxQ);
+       e++;
+       Q_T* rxQ = getReceiveBuffer();
+       if (!Q_Empty(rxQ)) {
+            message = Q_Dequeue(rxQ);
             
             /* Sets the appropriate flag to indicate a task needing, 
                 other threads will watch for the flag and handle it
@@ -157,22 +157,20 @@ void tBrain(void *arguement) {
             case MESSAGE_BT_CONNECT:
                 osEventFlagsSet(event_flags_id, BT_CONNECT_EF_MASK);
                 osEventFlagsSet(event_flags_id, BT_CONNECT_SUCCESS_MASK);
-            
-                message = 0;    //debug
                 break;
+            
             case MESSAGE_START_CHALLENGE_MUSIC:
                 osEventFlagsSet(event_flags_id, START_CHALLENGE_MASK);
-
-                message = 0;    //debug
                 break;
+            
             case MESSAGE_STOP_CHALLENGE_MUSIC:
                 osEventFlagsSet(event_flags_id, STOP_CHALLENGE_MASK);
-                message = 0;    //debug
                 break;
+            
             case MESSAGE_START_VICTORY_TUNE:
                 osEventFlagsSet(event_flags_id, START_VICTORY_MASK);
-                message = 0;    //debug
                 break;
+            
             // Bad command
             default:
                 setMotorMoveDir(MESSAGE_STOP);
