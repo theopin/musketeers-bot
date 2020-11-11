@@ -178,7 +178,7 @@ void tBrain(void *arguement) {
                 osEventFlagsSet(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK);
                 break;
             }
-        //}
+        }
     }
 }
 
@@ -213,5 +213,6 @@ int main(void) {
 
     osKernelStart();					  // Start thread execution
     for (;;) {
-    a++;}
+        a++;
+    }
 }
