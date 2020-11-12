@@ -35,6 +35,7 @@ void tLED(void *argument) {
         // Any set Motor bits in event flag signal indicate a moving robot
         if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_STATIONERY_EF_MASK) {
             osEventFlagsClear(event_flags_id, EXT_LED_BOT_STATIONERY_EF_MASK);
+            signalSuccessConnection();
             setStationeryLED();
         } else if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_MOVING_EF_MASK) {
             osEventFlagsClear(event_flags_id, EXT_LED_BOT_MOVING_EF_MASK);
@@ -126,6 +127,7 @@ void tAudio(void *argument) {
 void tBrain(void *arguement) {
     for (;;) {
        e++;
+        
        Q_T* rxQ = getReceiveBuffer();
        if (!Q_Empty(rxQ)) {
             message = Q_Dequeue(rxQ);
