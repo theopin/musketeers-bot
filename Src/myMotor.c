@@ -115,10 +115,10 @@ void initAudioPWM() {
 
 //	                   LB	          LF	           RB	         RF	     RIGHT	      RIGHT	        RIGHT	   RIGHT
 void changeAllFourPWM(double T1C0, double T1C1, double T2C0, double T2C1) {//, double T0C0, double T0C2, double T0C3, double T0C5) {
-    double fr_multiplier = 100;
-    double fl_multiplier = 100;
+    //double fr_multiplier = 100;
+    double fl_multiplier = 95;
     double br_multiplier = 100;
-    double bl_multiplier = 100;
+    //double bl_multiplier = 100;
     TPM1_C0V = (int)(T1C0 * fl_multiplier);
     TPM1_C1V = (int)(T1C1 * fl_multiplier);
     TPM2_C0V = (int)(T2C0 * br_multiplier);

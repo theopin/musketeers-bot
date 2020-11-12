@@ -157,6 +157,7 @@ void tBrain(void *arguement) {
 
             // Bluetooth
             case MESSAGE_BT_CONNECT:
+                signalSuccessConnection();    
                 osEventFlagsSet(event_flags_id, BT_CONNECT_EF_MASK);
                 osEventFlagsSet(event_flags_id, BT_CONNECT_SUCCESS_MASK);
                 break;

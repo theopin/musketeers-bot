@@ -136,7 +136,7 @@ void playNote(int note) {
         if (is_sound_looping) {
             note_counter = 0;
         } else {
-            SIM->SOPT2 &= ~SIM_SOPT2_TPMSRC_MASK; // Disables it TPM modules
+            SIM->SCGC6 &= ~SIM_SCGC6_TPM2_MASK; // Disables it TPM modules
         return;
         }
     }
@@ -203,7 +203,7 @@ void startSound(int sound_id) {
     beats_to_next_note = 0;
     
     // Selects clock to TPM module
-    SIM->SOPT2 |= SIM_SOPT2_TPMSRC(1);
+    SIM->SCGC6 |= SIM_SCGC6_TPM2_MASK;
 }
 
 void startSong() {
@@ -250,5 +250,5 @@ void initAudioPIT() {
 
 void initAudio(){
     initAudioPIT();
-    stopSong();
+    //stopSong();
 }   
