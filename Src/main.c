@@ -19,6 +19,8 @@ int d = 0;
 int e = 0;
 int f = 0;
 int g = 0;
+int h = 0;
+
 int start_bt = 0;
 int start_song = 0;
 int stop_song = 0;
@@ -26,23 +28,50 @@ int victory_tune = 0;
 uint32_t flags_music = 0; 
 
 static osEventFlagsId_t event_flags_id;
+
 /*----------------------------------------------------------------------------
- * Thread - LED Control
+ * Thread - Running LED Control
  *---------------------------------------------------------------------------*/
-void tLED(void *argument) {
+void tMovingLED(void *argument) {
     for (;;) {
         a++;
+        
+        if (getIsConnected() == 0) {
+            continue;
+        }
+        
         // Any set Motor bits in event flag signal indicate a moving robot
-        if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_STATIONERY_EF_MASK) {
-            osEventFlagsClear(event_flags_id, EXT_LED_BOT_STATIONERY_EF_MASK);
-            signalSuccessConnection();
-            setStationeryLED();
-        } else if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_MOVING_EF_MASK) {
+        if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_MOVING_EF_MASK) {
             osEventFlagsClear(event_flags_id, EXT_LED_BOT_MOVING_EF_MASK);
             setMovingLED();
         }
         
-        runExternalLED();
+        if (getIsMoving()) {      
+            runExternalMovingLED();
+        }
+    }
+}
+
+/*----------------------------------------------------------------------------
+ * Thread - Stationery LED Control
+ *---------------------------------------------------------------------------*/
+void tStationeryLED(void *argument) {
+    for (;;) {
+        h++;
+        
+        if (getIsConnected() == 0) {
+            continue;
+        }
+         
+        // Any set Motor bits in event flag signal indicate a moving robot
+        if (osEventFlagsGet(event_flags_id) & EXT_LED_BOT_STATIONERY_EF_MASK) {
+            osEventFlagsClear(event_flags_id, EXT_LED_BOT_STATIONERY_EF_MASK);
+            setStationeryLED();
+        }
+        
+        if (!getIsMoving()) {
+            runExternalStationeryLED();
+        }
     }
 }
 
@@ -52,39 +81,50 @@ void tLED(void *argument) {
 void tMotorControl(void *argument) {
     for (;;) {
         b++;
+        
         // Waits for event flag signalling that motor direction has changed
         osEventFlagsWait(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK, osFlagsWaitAll, EVENT_TIME_OUT);
         setMotorMoveDir(message);
         // Handles the change in direction event
         switch(getMotorMoveDir()) {
         case MESSAGE_STOP:
+            setStationeryLED();  // Clean this up
             stop();
             break;
         case MESSAGE_N:
+            setMovingLED();
             moveN();
             break;
         case MESSAGE_NE:
+            setMovingLED();
             moveNE();
             break;
         case MESSAGE_E:
+            setMovingLED();
             moveE();
             break;
         case MESSAGE_SE:
+            setMovingLED();
             moveSE();
             break;
         case MESSAGE_S:
+            setMovingLED();
             moveS();
             break;
         case MESSAGE_SW:
+            setMovingLED();
             moveSW();
             break;
         case MESSAGE_W:
+            setMovingLED();
             moveW();
             break;
         case MESSAGE_NW:
+            setMovingLED();
             moveNW();
             break;
         default:
+            setStationeryLED();  // Clean this up
             stop();
             break;
         }
@@ -101,12 +141,14 @@ void tAudio(void *argument) {
             osEventFlagsClear(event_flags_id, BT_CONNECT_EF_MASK);
             start_bt++; //debug
             startSuccessFx();
-
-        } else if (osEventFlagsGet(event_flags_id) & START_CHALLENGE_MASK) {
-            osEventFlagsClear(event_flags_id, START_CHALLENGE_MASK);
-            start_song++;   //debug
+            osDelay(3000); 
             startSong();
-            
+
+//        } else if (osEventFlagsGet(event_flags_id) & START_CHALLENGE_MASK) {
+//            osEventFlagsClear(event_flags_id, START_CHALLENGE_MASK);
+//             startSong();
+//            start_song++;   //debug
+   
         } else if (osEventFlagsGet(event_flags_id) & STOP_CHALLENGE_MASK) {
             osEventFlagsClear(event_flags_id, STOP_CHALLENGE_MASK);
             stop_song++;
@@ -157,9 +199,10 @@ void tBrain(void *arguement) {
 
             // Bluetooth
             case MESSAGE_BT_CONNECT:
+                setIsConnected(0);
+                osEventFlagsSet(event_flags_id, BT_CONNECT_SUCCESS_MASK);
                 signalSuccessConnection();    
                 osEventFlagsSet(event_flags_id, BT_CONNECT_EF_MASK);
-                osEventFlagsSet(event_flags_id, BT_CONNECT_SUCCESS_MASK);
                 break;
             
             case MESSAGE_START_CHALLENGE_MUSIC:
@@ -171,6 +214,9 @@ void tBrain(void *arguement) {
                 break;
             
             case MESSAGE_START_VICTORY_TUNE:
+                setMotorMoveDir(MESSAGE_STOP);
+                osEventFlagsSet(event_flags_id, EXT_LED_BOT_STATIONERY_EF_MASK);
+                osEventFlagsSet(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK);
                 osEventFlagsSet(event_flags_id, START_VICTORY_MASK);
                 break;
             
@@ -212,7 +258,8 @@ int main(void) {
     osThreadNew(tBrain, NULL, NULL);
     osThreadNew(tMotorControl, NULL, NULL);
     osThreadNew(tAudio,  NULL, NULL); // TODO probably need to set to high priority, need to change notes exactly at deadline
-    osThreadNew(tLED, NULL, NULL);
+    osThreadNew(tMovingLED, NULL, NULL);
+    osThreadNew(tStationeryLED, NULL, NULL);
 
     osKernelStart();					  // Start thread execution
     for (;;) {

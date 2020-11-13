@@ -4,6 +4,7 @@
 
 static port_c_t greenLEDPins[NUM_GREEN_LEDS] = {PTC3, PTC4, PTC5, PTC6, PTC10, PTC11, PTC12, PTC13, PTC16, PTC17};
 static int is_moving = 0;
+static int is_connected = 0;
 
 void initExternalLED() {
     int i = 0;
@@ -62,7 +63,9 @@ void signalSuccessConnection(void) {
 
         reps_left--;
         osDelay(CONNECTION_REPS_DELAY);
-    }	
+    }
+    
+    setIsConnected(1);
 }
 
 void setStationeryLED() {
@@ -73,20 +76,29 @@ void setMovingLED() {
     is_moving = 1;
 }
 
-void runExternalLED() {
-    // Moving
-    if (is_moving) {
-        clearAllGreenLED();
+int getIsMoving() {
+    return is_moving;
+}
 
-        nextTrailGreenLED();
-        toggleRedLED();
-        osDelay(RED_RUN_DELAY);
+void runExternalMovingLED() {
+    clearAllGreenLED();
 
-    // Stationery
-    } else {
-        setAllGreenLED();
+    nextTrailGreenLED();
+    toggleRedLED();
+    osDelay(RED_RUN_DELAY);
+}
 
-        toggleRedLED();
-        osDelay(RED_STOP_DELAY);
-    }
+void runExternalStationeryLED() {
+    setAllGreenLED();
+
+    toggleRedLED();
+    osDelay(RED_STOP_DELAY);
+}
+
+int getIsConnected() {
+    return is_connected;
+}
+
+void setIsConnected(int val) {
+    is_connected = val;
 }

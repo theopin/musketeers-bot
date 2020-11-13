@@ -1,4 +1,4 @@
-#define Q_SIZE (32)
+#define Q_SIZE (6)
 
 typedef struct {
     unsigned char Data[Q_SIZE];

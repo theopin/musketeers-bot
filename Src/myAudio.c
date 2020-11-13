@@ -21,10 +21,10 @@ static int victory_beats[] = {
 };
 
 static int success_fx_notes[] = {
-    F4, G4, AS4
+    F4, G4, AS4, PAUSE
 };
 static int success_fx_beats[] = { 
-    4, 4, 8
+    4, 4, 8, 32
 };
 
 
@@ -245,7 +245,7 @@ void initAudioPIT() {
     PIT->CHANNEL[PIT_CHANNEL].TCTRL |= (PIT_TCTRL_TEN_MASK | PIT_TCTRL_TIE_MASK);
     
     // Enable PIT module
-    PIT->MCR &= ~PIT_MCR_MDIS_MASK;
+    PIT->MCR &= ~PIT_MCR_MDIS_MASK; 
 }
 
 void initAudio(){
