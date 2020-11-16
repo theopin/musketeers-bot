@@ -11,7 +11,7 @@
 #include "myAudio.h"
 
 // DEBUG vars
-uint8_t message = 0; // TODO define where first declare HERE FOR DEBUG
+//uint8_t message = 0; // TODO define where first declare HERE FOR DEBUG
 
 static osEventFlagsId_t event_flags_id;
 
