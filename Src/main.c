@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------
- * CMSIS-RTOS 'main' function template
+ * CMSIS-RTOS 
  *---------------------------------------------------------------------------*/
 #include "myCommonFunctions.h"
 #include "myOSFunctions.h"
@@ -16,7 +16,7 @@ static osEventFlagsId_t event_flags_id;
 /*----------------------------------------------------------------------------
  * Thread - Running LED Control
  *---------------------------------------------------------------------------*/
-void tMovingLED(void *argument) {
+void tRunningLED(void *argument) {
     for (;;) {
         
         if (getIsConnected() == 0) {
@@ -36,9 +36,9 @@ void tMovingLED(void *argument) {
 }
 
 /*----------------------------------------------------------------------------
- * Thread - Stationery LED Control
+ * Thread - Stationary LED Control
  *---------------------------------------------------------------------------*/
-void tStationeryLED(void *argument) {
+void tStationaryLED(void *argument) {
     for (;;) {
         
         if (getIsConnected() == 0) {
@@ -58,9 +58,9 @@ void tStationeryLED(void *argument) {
 }
 
 /*----------------------------------------------------------------------------
- * Thread - Motor Control
+ * Thread - Motor
  *---------------------------------------------------------------------------*/
-void tMotorControl(void *argument) {
+void tMotor(void *argument) {
     for (;;) {
         
         // Waits for event flag signalling that motor direction has changed
@@ -68,43 +68,33 @@ void tMotorControl(void *argument) {
         // Handles the change in direction event
         switch(getMotorMoveDir()) {
         case MESSAGE_STOP:
-            setStationeryLED();  // Clean this up
             stop();
             break;
         case MESSAGE_N:
-            setMovingLED();
             moveN();
             break;
         case MESSAGE_NE:
-            setMovingLED();
             moveNE();
             break;
         case MESSAGE_E:
-            setMovingLED();
             moveE();
             break;
         case MESSAGE_SE:
-            setMovingLED();
             moveSE();
             break;
         case MESSAGE_S:
-            setMovingLED();
             moveS();
             break;
         case MESSAGE_SW:
-            setMovingLED();
             moveSW();
             break;
         case MESSAGE_W:
-            setMovingLED();
             moveW();
             break;
         case MESSAGE_NW:
-            setMovingLED();
             moveNW();
             break;
         default:
-            setStationeryLED();  // Clean this up
             stop();
             break;
         }
@@ -225,10 +215,10 @@ int main(void) {
     initEvent();                        // Note must be done AFTER initializing kernel
     
     osThreadNew(tBrain, NULL, NULL);
-    osThreadNew(tMotorControl, NULL, NULL);
+    osThreadNew(tMotor, NULL, NULL);
     osThreadNew(tAudio,  NULL, NULL); // TODO probably need to set to high priority, need to change notes exactly at deadline
-    osThreadNew(tMovingLED, NULL, NULL);
-    osThreadNew(tStationeryLED, NULL, NULL);
+    osThreadNew(tRunningLED, NULL, NULL);
+    osThreadNew(tStationaryLED, NULL, NULL);
 
     osKernelStart();					  // Start thread execution
     for (;;) {
