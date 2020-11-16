@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------
- * CMSIS-RTOS 'main' function template
+ * CMSIS-RTOS 
  *---------------------------------------------------------------------------*/
 #include "myCommonFunctions.h"
 #include "myOSFunctions.h"
