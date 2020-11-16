@@ -104,7 +104,7 @@ void tMotor(void *argument) {
             moveNW();
             break;
         default:
-            setStationeryLED();  // Clean this up
+            setStationeryLED(); 
             stop();
             break;
         }
