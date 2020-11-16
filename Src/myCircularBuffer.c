@@ -39,7 +39,7 @@ unsigned char Q_Dequeue(Q_T * q) {
         q->Data[q->Head++] = 0;
         q->Head %= Q_SIZE;
         q->Size--;
-    }
+    } 
 
     return t;
 }

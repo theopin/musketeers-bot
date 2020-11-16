@@ -10,8 +10,6 @@
 #include "myMessageList.h"
 #include "myAudio.h"
 
-// DEBUG vars
-//uint8_t message = 0; // TODO define where first declare HERE FOR DEBUG
 
 static osEventFlagsId_t event_flags_id;
 
@@ -67,7 +65,6 @@ void tMotorControl(void *argument) {
         
         // Waits for event flag signalling that motor direction has changed
         osEventFlagsWait(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK, osFlagsWaitAll, EVENT_TIME_OUT);
-        setMotorMoveDir(message);
         // Handles the change in direction event
         switch(getMotorMoveDir()) {
         case MESSAGE_STOP:
@@ -142,7 +139,7 @@ void tAudio(void *argument) {
  *---------------------------------------------------------------------------*/
 void tBrain(void *arguement) {
     for (;;) {
-        
+       uint8_t message; 
        Q_T* rxQ = getReceiveBuffer();
        if (!Q_Empty(rxQ)) {
             message = Q_Dequeue(rxQ);
