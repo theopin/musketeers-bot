@@ -16,7 +16,7 @@ static osEventFlagsId_t event_flags_id;
 /*----------------------------------------------------------------------------
  * Thread - Running LED Control
  *---------------------------------------------------------------------------*/
-void tMovingLED(void *argument) {
+void tRunningLED(void *argument) {
     for (;;) {
         
         if (getIsConnected() == 0) {
@@ -36,9 +36,9 @@ void tMovingLED(void *argument) {
 }
 
 /*----------------------------------------------------------------------------
- * Thread - Stationery LED Control
+ * Thread - Stationary LED Control
  *---------------------------------------------------------------------------*/
-void tStationeryLED(void *argument) {
+void tStationaryLED(void *argument) {
     for (;;) {
         
         if (getIsConnected() == 0) {
@@ -58,9 +58,9 @@ void tStationeryLED(void *argument) {
 }
 
 /*----------------------------------------------------------------------------
- * Thread - Motor Control
+ * Thread - Motor
  *---------------------------------------------------------------------------*/
-void tMotorControl(void *argument) {
+void tMotor(void *argument) {
     for (;;) {
         
         // Waits for event flag signalling that motor direction has changed
@@ -205,7 +205,6 @@ void tBrain(void *arguement) {
 void initEvent() {
     event_flags_id = osEventFlagsNew(NULL);
     osEventFlagsClear(event_flags_id, 0xFFFF);
-    osEventFlagsSet(event_flags_id, ALL_EVENTS_HANDLED_EF_MASK);
 }
 
 void initRobotComponents(void) {
@@ -226,10 +225,10 @@ int main(void) {
     initEvent();                        // Note must be done AFTER initializing kernel
     
     osThreadNew(tBrain, NULL, NULL);
-    osThreadNew(tMotorControl, NULL, NULL);
+    osThreadNew(tMotor, NULL, NULL);
     osThreadNew(tAudio,  NULL, NULL); // TODO probably need to set to high priority, need to change notes exactly at deadline
-    osThreadNew(tMovingLED, NULL, NULL);
-    osThreadNew(tStationeryLED, NULL, NULL);
+    osThreadNew(tRunningLED, NULL, NULL);
+    osThreadNew(tStationaryLED, NULL, NULL);
 
     osKernelStart();					  // Start thread execution
     for (;;) {
