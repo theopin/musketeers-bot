@@ -6,7 +6,7 @@ static int stop_song_notes[] = {
 };
 static int stop_song_beats[] = { 
     0
-};
+};  
 
 static int victory_notes[] = {
     AS5, F5A, F5,
@@ -24,7 +24,7 @@ static int success_fx_notes[] = {
     F4, G4, AS4, PAUSE
 };
 static int success_fx_beats[] = { 
-    4, 4, 8, 32
+    4, 4, 8, 32 
 };
 
 
@@ -126,7 +126,7 @@ void changeBuzzerFrequency(int freq) {
 }
   
 void changeBuzzerVolume(double target_volume) {
-    TPM0_C4V =  TPM0->MOD * target_volume;
+    TPM0_C0V =  TPM0->MOD * target_volume;
     buzzer_volume = target_volume;
 }
 
@@ -250,5 +250,4 @@ void initAudioPIT() {
 
 void initAudio(){
     initAudioPIT();
-    //stopSong();
 }   

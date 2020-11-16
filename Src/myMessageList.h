@@ -19,7 +19,6 @@ typedef enum {
 
 // The event flag bits for each task
 typedef enum {
-    ALL_EVENTS_HANDLED_EF_MASK = 0b1,
     MOTOR_DIR_CHANGE_EF_MASK = 0b10,
     BT_CONNECT_EF_MASK = 0b100,
     EXT_LED_BOT_MOVING_EF_MASK = 0b1000,

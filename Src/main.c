@@ -205,7 +205,6 @@ void tBrain(void *arguement) {
 void initEvent() {
     event_flags_id = osEventFlagsNew(NULL);
     osEventFlagsClear(event_flags_id, 0xFFFF);
-    osEventFlagsSet(event_flags_id, ALL_EVENTS_HANDLED_EF_MASK);
 }
 
 void initRobotComponents(void) {
