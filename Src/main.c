@@ -68,43 +68,33 @@ void tMotor(void *argument) {
         // Handles the change in direction event
         switch(getMotorMoveDir()) {
         case MESSAGE_STOP:
-            setStationeryLED();  // Clean this up
             stop();
             break;
         case MESSAGE_N:
-            setMovingLED();
             moveN();
             break;
         case MESSAGE_NE:
-            setMovingLED();
             moveNE();
             break;
         case MESSAGE_E:
-            setMovingLED();
             moveE();
             break;
         case MESSAGE_SE:
-            setMovingLED();
             moveSE();
             break;
         case MESSAGE_S:
-            setMovingLED();
             moveS();
             break;
         case MESSAGE_SW:
-            setMovingLED();
             moveSW();
             break;
         case MESSAGE_W:
-            setMovingLED();
             moveW();
             break;
         case MESSAGE_NW:
-            setMovingLED();
             moveNW();
             break;
         default:
-            setStationeryLED(); 
             stop();
             break;
         }
