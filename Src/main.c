@@ -12,20 +12,6 @@
 
 // DEBUG vars
 uint8_t message = 0; // TODO define where first declare HERE FOR DEBUG
-uint32_t flags = 0; // TODO define where first declared as well
-int a = 0;
-int b = 0;
-int d = 0;
-int e = 0;
-int f = 0;
-int g = 0;
-int h = 0;
-
-int start_bt = 0;
-int start_song = 0;
-int stop_song = 0;
-int victory_tune = 0;
-uint32_t flags_music = 0; 
 
 static osEventFlagsId_t event_flags_id;
 
@@ -34,7 +20,6 @@ static osEventFlagsId_t event_flags_id;
  *---------------------------------------------------------------------------*/
 void tMovingLED(void *argument) {
     for (;;) {
-        a++;
         
         if (getIsConnected() == 0) {
             continue;
@@ -57,7 +42,6 @@ void tMovingLED(void *argument) {
  *---------------------------------------------------------------------------*/
 void tStationeryLED(void *argument) {
     for (;;) {
-        h++;
         
         if (getIsConnected() == 0) {
             continue;
@@ -80,7 +64,6 @@ void tStationeryLED(void *argument) {
  *---------------------------------------------------------------------------*/
 void tMotorControl(void *argument) {
     for (;;) {
-        b++;
         
         // Waits for event flag signalling that motor direction has changed
         osEventFlagsWait(event_flags_id, MOTOR_DIR_CHANGE_EF_MASK, osFlagsWaitAll, EVENT_TIME_OUT);
@@ -136,27 +119,18 @@ void tMotorControl(void *argument) {
  *---------------------------------------------------------------------------*/
 void tAudio(void *argument) {
     for (;;) {
-        g++;
         if (osEventFlagsGet(event_flags_id) & BT_CONNECT_EF_MASK) {
             osEventFlagsClear(event_flags_id, BT_CONNECT_EF_MASK);
-            start_bt++; //debug
             startSuccessFx();
             osDelay(3000); 
             startSong();
 
-//        } else if (osEventFlagsGet(event_flags_id) & START_CHALLENGE_MASK) {
-//            osEventFlagsClear(event_flags_id, START_CHALLENGE_MASK);
-//             startSong();
-//            start_song++;   //debug
-   
         } else if (osEventFlagsGet(event_flags_id) & STOP_CHALLENGE_MASK) {
             osEventFlagsClear(event_flags_id, STOP_CHALLENGE_MASK);
-            stop_song++;
             stopSong();
 
         } else if (osEventFlagsGet(event_flags_id) & START_VICTORY_MASK) {
-            osEventFlagsClear(event_flags_id, START_VICTORY_MASK);
-            victory_tune++;    
+            osEventFlagsClear(event_flags_id, START_VICTORY_MASK);   
             startVictoryTune();
         }
 
@@ -168,7 +142,6 @@ void tAudio(void *argument) {
  *---------------------------------------------------------------------------*/
 void tBrain(void *arguement) {
     for (;;) {
-       e++;
         
        Q_T* rxQ = getReceiveBuffer();
        if (!Q_Empty(rxQ)) {
@@ -263,6 +236,5 @@ int main(void) {
 
     osKernelStart();					  // Start thread execution
     for (;;) {
-        a++;
     }
 }
